@@ -1,3 +1,4 @@
+package corona.games;
 import javafx.scene.image.Image;
 import java.io.File;
 class Util{

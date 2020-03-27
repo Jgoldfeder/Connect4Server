@@ -1,3 +1,4 @@
+package corona.games;
 import java.io.Serializable;
 
 class Info implements Serializable{
