@@ -1,4 +1,4 @@
-package corona.games.client;
+package corona.games.util;
 
 import java.io.InputStream;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -7,7 +7,7 @@ import corona.games.util.Message;
 
 public class MessageReciever implements Runnable{
 
-    private InputStream in;
+    
     private LinkedBlockingDeque<Message> incomingMessages;
     private volatile int shutdown = 0;
 

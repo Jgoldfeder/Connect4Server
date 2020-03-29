@@ -1,4 +1,4 @@
-package corona.games.client;
+package corona.games.util;
 
 public class MessageSender implements Runnable {
 
