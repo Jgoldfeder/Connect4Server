@@ -14,7 +14,6 @@ public class Message {
     private byte[] networkPayload;
 
     public Message(MessageType mt, String message,long clientID) {
-
         this.messageType = mt;
         this.msg = message;
     }
@@ -46,15 +45,10 @@ public class Message {
         */
         int bufferSize;
         byte[] messageContent;
-        if(msg != null) {
-
-            messageContent = this.msg.getBytes();
-            bufferSize = 16 + messageContent.length;
-        }
-        else {
-            bufferSize = 17;
-            messageContent = new byte[1];
-        }
+        if(msg == null) msg = "";
+        messageContent = this.msg.getBytes();
+        bufferSize = 16 + messageContent.length;
+        
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         buffer.clear();
 
