@@ -31,6 +31,10 @@ public class MessageReciever implements Runnable {
                 i = socket.getInputStream().read(buffer);
                 if(i > 1) {
                     msg = new Message(buffer);
+                    if(msg.getMessageType()==Message.MessageType.GARBAGE){
+                        msg = null;
+                        i = 0;
+                    }
                 }
             }
         } catch (IOException e) {
