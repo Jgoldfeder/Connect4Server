@@ -1,11 +1,9 @@
 package corona.games.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import corona.games.util.Message;
 
 public class MessageReciever implements Runnable {
 
@@ -24,7 +22,6 @@ public class MessageReciever implements Runnable {
     
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         while (!shutdown) {
             if (socket.isConnected()) {
                 // This number is kinda random have to really fine tune ideal message size
@@ -36,10 +33,8 @@ public class MessageReciever implements Runnable {
                         incomingMessages.put(new Message(buffer));
                     }
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
 

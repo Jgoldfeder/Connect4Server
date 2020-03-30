@@ -18,13 +18,11 @@ public class MessageSender implements Runnable {
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
         while (!shutdown) {
             Message m = null;
             try {
                 m = outgoingMessages.poll(1, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -33,10 +31,8 @@ public class MessageSender implements Runnable {
                     socket.getOutputStream().write(m.getNetworkPayload());
                     socket.getOutputStream().flush();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }
         }
 
     }
