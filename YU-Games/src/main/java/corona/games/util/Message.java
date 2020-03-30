@@ -62,7 +62,7 @@ public class Message {
     }
 
     public Message(byte[] networkPayload) {
-        ByteBuffer buffer = ByteBuffer.wrap(this.networkPayload);
+        ByteBuffer buffer = ByteBuffer.wrap(networkPayload);
         buffer.clear();
 
         this.messageType = MessageType.values()[buffer.getInt()];

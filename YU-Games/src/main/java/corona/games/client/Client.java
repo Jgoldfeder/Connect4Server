@@ -78,6 +78,12 @@ public class Client implements Runnable {
                         break;
                     case INIT_RESPONSE:
                         this.clientID = m.getClientID();
+                    case INIT_CLIENT:
+                        this.clientID = m.getClientID();
+                        System.out.println("From the server");
+                        String response1 = scanner.nextLine();
+                        sendMessage(new Message(MessageType.CHAT_MSG,response1,clientID));
+                        break;
                     default:
                         System.out.println("Shouldnt be here");
                 }
