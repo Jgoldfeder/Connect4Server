@@ -15,12 +15,22 @@ public class Message {
 
     public Message(MessageType mt, String message,long clientID) {
 
-
         this.messageType = mt;
         this.msg = message;
     }
 
-
+    public long getClientID(){
+        return clientID;
+    }
+    
+    public String getMessage(){
+        return msg;
+    }
+    
+    public MessageType getMessageType(){
+        return messageType;
+    }
+    
     public byte[] getNetworkPayload() {
 
         if(this.networkPayload != null) {

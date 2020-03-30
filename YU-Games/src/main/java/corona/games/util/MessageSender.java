@@ -16,6 +16,11 @@ public class MessageSender implements Runnable {
         this.outgoingMessages = outgoingMessages;
     }
 
+
+    public void shutdown() {
+        this.shutdown = true;
+    }    
+    
     @Override
     public void run() {
         while (!shutdown) {
