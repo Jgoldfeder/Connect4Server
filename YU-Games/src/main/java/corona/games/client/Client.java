@@ -21,12 +21,16 @@ public class Client implements Runnable {
     private LinkedBlockingDeque<Message> outgoingMessages;
     private LinkedBlockingDeque<Message> incomingMessages;
 
+    private long clientID;
+
     public Client(String hostName, int port) {
         this.host = hostName;
         this.port = port;
 
         this.outgoingMessages = new LinkedBlockingDeque<>();
         this.incomingMessages = new LinkedBlockingDeque<>();
+
+        this.clientID = 0;
     }
 
     @Override
@@ -44,8 +48,10 @@ public class Client implements Runnable {
         sender = new MessageSender(this.socket, this.outgoingMessages);
         receiver = new MessageReciever(this.socket, this.incomingMessages);
 
+        new Thread(sender).start();
+        new Thread(receiver).start();
         while(!shutdown) {
-            
+
         }
 
     }
