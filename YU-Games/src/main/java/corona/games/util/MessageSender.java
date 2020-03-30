@@ -33,7 +33,9 @@ public class MessageSender implements Runnable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
         }
 
     }
 }
+
