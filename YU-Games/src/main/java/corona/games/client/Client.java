@@ -45,7 +45,7 @@ public class Client implements Runnable {
         receiver = new MessageReciever(this.socket, this.incomingMessages);
 
         while(!shutdown) {
-
+            
         }
 
     }
