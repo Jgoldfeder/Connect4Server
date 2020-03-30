@@ -116,6 +116,7 @@ public class Server
                 
                 //broadcast info
                 if(info.getMessageType() == MessageType.CHAT_MSG){
+                    //TODO add check for broken connection and remove broken connections
                     for(ClientHandler ch: server.chatMembers){
                         if(ch==this) continue;
                         ch.writeMessage(info);
@@ -148,7 +149,7 @@ public class Server
                 this.username = msg.getMessage();
                 
                 //send initial info to Client. Client should not send anything else until this initial handshake is completed
-                Message m = new Message(MessageType.INIT_CLIENT,"",clientID);
+                Message m = new Message(MessageType.INIT_CLIENT,"",clientID,"server");
                 writeMessage(m);
                 
                 //enter chat room

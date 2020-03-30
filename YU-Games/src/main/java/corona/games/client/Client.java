@@ -23,7 +23,7 @@ public class Client implements Runnable {
     private LinkedBlockingDeque<Message> outgoingMessages;
 
     private long clientID;
-
+    private String username;
     public Client(String hostName, int port) {
         this.host = hostName;
         this.port = port;
@@ -55,11 +55,11 @@ public class Client implements Runnable {
         // get username
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter a username:");
-        String userName = scanner.nextLine();
+        this.username = scanner.nextLine();
         
         // initial handshake
         // send username
-        sendMessage(new Message(Message.MessageType.INIT_CLIENT, userName, -1));        
+        sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1,this.username));        
         // wait for client id
         Message msg = MessageReciever.read(socket);
         if(msg.getMessageType() != MessageType.INIT_CLIENT){
@@ -81,14 +81,15 @@ public class Client implements Runnable {
             if(m != null) {
                 switch(m.getMessageType()) {
                     case CHAT_MSG:
-                        System.out.println(m.getMessage());
+                        System.out.println(m.getUsername() + ": " +m.getMessage());
                         break;
                     case INIT_CLIENT:
                         //after handshake, we should never see this command
                         System.out.println("Shouldn't be here");
                         break;
                     default:
-                        System.out.println("Shouldn't be here");
+                        System.out.println(m.getMessageType());
+                        // System.out.println("Shouldn't mbe here");
                 }
             }
         }
@@ -101,7 +102,7 @@ public class Client implements Runnable {
 
         while (!shutdown) {  
             String response = scanner.nextLine();
-            sendMessage(new Message(MessageType.CHAT_MSG,response,clientID));
+            sendMessage(new Message(MessageType.CHAT_MSG,response,clientID,this.username));
         }
         
     }

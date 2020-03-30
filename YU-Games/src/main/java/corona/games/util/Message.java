@@ -12,10 +12,11 @@ public class Message {
     private String msg = null;
     private MessageType messageType;
     private byte[] networkPayload;
-
-    public Message(MessageType mt, String message,long clientID) {
+    private String username;
+    public Message(MessageType mt, String message, long clientID, String username) {
         this.messageType = mt;
         this.msg = message;
+        this.username = username;
     }
 
     public long getClientID(){
@@ -24,6 +25,10 @@ public class Message {
     
     public String getMessage(){
         return msg;
+    }
+
+    public String getUsername() {
+        return this.username;
     }
     
     public MessageType getMessageType(){
@@ -41,13 +46,18 @@ public class Message {
         1 int (msg type) = 4 bytes
         1 long (clientid) = 8 bytes
         1 int (size of message) = 4 bytes
-        = 16 + message
+        1 int (size of name) = 4 bytes
+        = 20 + message + username
         */
         int bufferSize;
         byte[] messageContent;
+        byte[] usernameBytes;
         if(msg == null) msg = "";
+        //maybe throw error
+        if(this.username == null) this.username = "";
         messageContent = this.msg.getBytes();
-        bufferSize = 16 + messageContent.length;
+        usernameBytes = this.username.getBytes();
+        bufferSize = 20 + messageContent.length + usernameBytes.length;
         
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         buffer.clear();
@@ -56,6 +66,8 @@ public class Message {
         buffer.putLong(this.clientID);
         buffer.putInt(messageContent.length);
         buffer.put(messageContent);
+        buffer.putInt(usernameBytes.length);
+        buffer.put(usernameBytes);
         buffer.flip();
         this.networkPayload = buffer.array();
         return this.networkPayload;
@@ -71,6 +83,10 @@ public class Message {
         byte[] bits = new byte[msgSize];
         buffer.get(bits);
         this.msg = new String(bits);
+        int usernameSize = buffer.getInt();
+        byte[] usernameBits = new byte[usernameSize];
+        buffer.get(usernameBits);
+        this.username = new String(usernameBits);
         this.networkPayload = networkPayload;
     }
 }
