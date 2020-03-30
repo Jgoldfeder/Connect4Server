@@ -129,11 +129,10 @@ class ClientHandler extends Thread
                     s.writeObject(info);
                 }
             }
-        
-            // closing resources 
-            this.odis.close(); 
-            this.odos.close(); 
-              
+         // closing resources 
+                this.odis.close(); 
+                this.odos.close(); 
+                 
         }catch(Exception e){ 
             e.printStackTrace(); 
         } 

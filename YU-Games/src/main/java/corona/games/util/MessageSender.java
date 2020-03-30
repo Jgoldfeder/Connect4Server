@@ -35,6 +35,7 @@ public class MessageSender implements Runnable {
                 try {
                     socket.getOutputStream().write(m.getNetworkPayload());
                     socket.getOutputStream().flush();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

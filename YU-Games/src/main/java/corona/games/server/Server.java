@@ -79,8 +79,8 @@ public class Server
         private MessageReciever reciever;
         private MessageSender sender;
         private LinkedBlockingDeque<Message> outgoingMessages;
-        private LinkedBlockingDeque<Message> incomingMessages;
-
+        private String username;
+        
         // Constructor 
         private ClientHandler(Server server,Socket s,long clientID)  
         { 
@@ -88,8 +88,6 @@ public class Server
             this.s = s; 
             this.clientID=clientID;
             this.outgoingMessages = new LinkedBlockingDeque<>();
-            this.incomingMessages = new LinkedBlockingDeque<>();
-            this.reciever = new MessageReciever(s,incomingMessages);
             this.sender = new MessageSender(s,outgoingMessages);   
             Thread rThread = new Thread(reciever);
             rThread.start();
@@ -107,43 +105,49 @@ public class Server
             }
             
             
-            Message[] msgs = null;
+            Message info = null;
             while(true){
-                msgs = readMessages();
-                for(Message info: msgs){
-                    if(info.getMessageType() == MessageType.EXIT){
-                        //remove from chat list
-                        server.chatMembers.remove(this);
-                        break;
-                    }
-                    
-                    //broadcast info
-                    if(info.getMessageType() == MessageType.CHAT_MSG){
-                        for(ClientHandler ch: server.chatMembers){
-                            ch.writeMessage(info);
-                        }
+                info = MessageReciever.read(s);
+                if(info.getMessageType() == MessageType.EXIT){
+                    //remove from chat list
+                    server.chatMembers.remove(this);
+                    break;
+                }
+                
+                //broadcast info
+                if(info.getMessageType() == MessageType.CHAT_MSG){
+                    for(ClientHandler ch: server.chatMembers){
+                        if(ch==this) continue;
+                        ch.writeMessage(info);
                     }
                 }
+                
             }     
             
         }
       
-        private void writeMessage(Message m){
-            outgoingMessages.add(m);
+        public void writeMessage(Message m) {
+            try {
+                this.outgoingMessages.put(m);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         
-        private Message[] readMessages(){
-            ArrayList<Message> msgs = new ArrayList<>();
-            incomingMessages.drainTo(msgs);
-            return msgs.toArray(new Message[0]);
-        }
-      
         @Override
         public void run()  
         { 
             try
             { 
-                //send initial info to Client
+                // get initial client data. This consists of that client's username
+                Message msg = MessageReciever.read(s);
+                if(msg.getMessageType() != MessageType.INIT_CLIENT){
+                    throw new IllegalArgumentException("Client does not conform to protocal!");
+                }
+                this.username = msg.getMessage();
+                
+                //send initial info to Client. Client should not send anything else until this initial handshake is completed
                 Message m = new Message(MessageType.INIT_CLIENT,"",clientID);
                 writeMessage(m);
                 

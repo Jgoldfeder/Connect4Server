@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 public class Message {
 
     public static enum MessageType {
-        INIT_CLIENT, INIT_RESPONSE, CHAT_MSG, EXIT;
+        INIT_CLIENT, CHAT_MSG, EXIT;
     }
     
     private long clientID = 0;

@@ -20,21 +20,36 @@ public class MessageReciever implements Runnable {
         this.shutdown = true;
     }
     
+    
+    public static Message read(Socket socket){
+        Message  msg = null;
+        // This number is kinda random have to really fine tune ideal message size
+        byte[] buffer = new byte[40960];
+        int i = 0;
+        try {
+            while(i <= 1){
+                i = socket.getInputStream().read(buffer);
+                if(i > 1) {
+                    msg = new Message(buffer);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+
+        return msg;
+    }
+    
+    
+    
     @Override
     public void run() {
         while (!shutdown) {
             if (socket.isConnected()) {
-                // This number is kinda random have to really fine tune ideal message size
-                byte[] buffer = new byte[40960];
-                int i;
                 try {
-                    i = socket.getInputStream().read(buffer);
-                    if(i > 1) {
-                        incomingMessages.put(new Message(buffer));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                    Message msg = read(socket);
+                    incomingMessages.put(msg);
+                }catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 

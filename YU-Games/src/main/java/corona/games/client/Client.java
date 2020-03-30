@@ -18,11 +18,9 @@ public class Client implements Runnable {
     private final int port;
     private Socket socket;
 
-    private MessageReciever receiver;
     private MessageSender sender;
 
     private LinkedBlockingDeque<Message> outgoingMessages;
-    private LinkedBlockingDeque<Message> incomingMessages;
 
     private long clientID;
 
@@ -31,14 +29,15 @@ public class Client implements Runnable {
         this.port = port;
 
         this.outgoingMessages = new LinkedBlockingDeque<>();
-        this.incomingMessages = new LinkedBlockingDeque<>();
 
-        this.clientID = 0;
+        //set default to an invalid value
+        this.clientID = -1;
     }
 
     @Override
     public void run() {
 
+        // connect to server
         try {
             this.socket = new Socket(this.host, this.port);
         } catch (UnknownHostException e) {
@@ -48,50 +47,65 @@ public class Client implements Runnable {
             e.printStackTrace();
         }
 
+        // start up threads to send data
         sender = new MessageSender(this.socket, this.outgoingMessages);
-        receiver = new MessageReciever(this.socket, this.incomingMessages);
-
         new Thread(sender).start();
-        new Thread(receiver).start();
+        
+        
+        // get username
         Scanner scanner = new Scanner(System.in);
-
         System.out.print("Enter a username:");
         String userName = scanner.nextLine();
-        System.out.println();
+        
+        // initial handshake
+        // send username
+        sendMessage(new Message(Message.MessageType.INIT_CLIENT, userName, -1));        
+        // wait for client id
+        Message msg = MessageReciever.read(socket);
+        if(msg.getMessageType() != MessageType.INIT_CLIENT){
+            throw new IllegalArgumentException("Client does not conform to protocal!");
+        }                                        
 
-        sendMessage(new Message(Message.MessageType.INIT_CLIENT, userName, 0));
+        this.clientID = msg.getClientID();
+  
+        // start user input loop
+        Thread userLoop = new Thread(()->userInputLoop());
+        userLoop.start();
 
+        // enter server input loop
         while (!shutdown) {
             Message m = null;
-            try {
-                m = incomingMessages.poll(100, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+
+            m = MessageReciever.read(socket);
+
             if(m != null) {
                 switch(m.getMessageType()) {
                     case CHAT_MSG:
                         System.out.println(m.getMessage());
-                        String response = scanner.nextLine();
-                        sendMessage(new Message(MessageType.CHAT_MSG,response,clientID));
                         break;
-                    case INIT_RESPONSE:
-                        this.clientID = m.getClientID();
                     case INIT_CLIENT:
-                        this.clientID = m.getClientID();
-                        System.out.println("From the server");
-                        String response1 = scanner.nextLine();
-                        sendMessage(new Message(MessageType.CHAT_MSG,response1,clientID));
+                        //after handshake, we should never see this command
+                        System.out.println("Shouldn't be here");
                         break;
                     default:
-                        System.out.println("Shouldnt be here");
+                        System.out.println("Shouldn't be here");
                 }
             }
         }
 
     }
 
+    private void userInputLoop(){
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (!shutdown) {  
+            String response = scanner.nextLine();
+            sendMessage(new Message(MessageType.CHAT_MSG,response,clientID));
+        }
+        
+    }
+    
     public void sendMessage(Message m) {
         try {
             this.outgoingMessages.put(m);
