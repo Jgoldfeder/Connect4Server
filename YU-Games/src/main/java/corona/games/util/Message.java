@@ -44,8 +44,17 @@ public class Message {
         1 int (size of message) = 4 bytes
         = 16 + message
         */
-        byte[] messageContent = this.msg.getBytes();
-        int bufferSize = 16 + messageContent.length;
+        int bufferSize;
+        byte[] messageContent;
+        if(msg != null) {
+
+            messageContent = this.msg.getBytes();
+            bufferSize = 16 + messageContent.length;
+        }
+        else {
+            bufferSize = 17;
+            messageContent = new byte[1];
+        }
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         buffer.clear();
 

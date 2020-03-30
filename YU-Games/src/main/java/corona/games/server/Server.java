@@ -144,7 +144,7 @@ public class Server
             try
             { 
                 //send initial info to Client
-                Message m = new Message(MessageType.INIT_CLIENT,null,clientID);
+                Message m = new Message(MessageType.INIT_CLIENT,"",clientID);
                 writeMessage(m);
                 
                 //enter chat room
