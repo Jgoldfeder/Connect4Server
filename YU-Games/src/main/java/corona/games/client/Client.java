@@ -53,10 +53,10 @@ public class Client implements Runnable {
         
         
         // get username
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a username:");
-        this.username = scanner.nextLine();
-        
+        // Scanner scanner = new Scanner(System.in);
+        // System.out.print("Enter a username:");
+        // this.username = scanner.nextLine();
+        this.username = getUsername();
         // initial handshake
         // send username
         sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1,this.username));        
@@ -114,6 +114,16 @@ public class Client implements Runnable {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private String getUsername() {
+        new Thread(){
+            @Override
+            public void run() {
+                javafx.application.Application.launch(Welcome.class);
+            }
+        }.start();
+        return Welcome.getUsername();
     }
 
     public static void main(String[] args) {

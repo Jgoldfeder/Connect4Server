@@ -16,10 +16,27 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.concurrent.CountDownLatch;
+
 public class Welcome extends Application {
 
+    private static String username;
+    private static final CountDownLatch haveUserNameLatch = new CountDownLatch(1);
 
+    public static String getUsername() {
+        try {
+            haveUserNameLatch.await();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return username;
+    }
 
+    private static void setUserName(String uname) {
+        username = uname;
+        haveUserNameLatch.countDown();
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         // TODO Auto-generated method stub
@@ -35,25 +52,12 @@ public class Welcome extends Application {
         name.getText();
         GridPane.setConstraints(name, 0, 0);
         grid.getChildren().add(name);
-        //Defining the Last Name text field
-        final TextField lastName = new TextField();
-        lastName.setPromptText("Enter your last name.");
-        GridPane.setConstraints(lastName, 0, 1);
-        grid.getChildren().add(lastName);
-        //Defining the Comment text field
-        final TextField comment = new TextField();
-        comment.setPrefColumnCount(15);
-        comment.setPromptText("Enter your comment.");
-        GridPane.setConstraints(comment, 0, 2);
-        grid.getChildren().add(comment);
+
         //Defining the Submit button
         Button submit = new Button("Submit");
         GridPane.setConstraints(submit, 1, 0);
         grid.getChildren().add(submit);
-        //Defining the Clear button
-        Button clear = new Button("Clear");
-        GridPane.setConstraints(clear, 1, 1);
-        grid.getChildren().add(clear);
+
         Scene scene = new Scene(grid);
         primaryStage.setTitle("Welcome to YU Game Hub");
         primaryStage.setScene(scene);
@@ -62,14 +66,23 @@ public class Welcome extends Application {
             @Override
             public void handle(Event event) {
                 // TODO Auto-generated method stub
-                System.out.println(name.getText());
-
+                setUserName(name.getText());
+                primaryStage.close();
             }
         });
         primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        // launch(args);
+        new Thread(){
+            @Override
+            public void run() {
+                javafx.application.Application.launch(Welcome.class);
+            }
+        }.start();
+        String name = Welcome.getUsername();
+        System.out.println(name);
+
     }
 }
