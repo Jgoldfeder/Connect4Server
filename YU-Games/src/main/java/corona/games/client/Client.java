@@ -99,7 +99,6 @@ public class Client implements Runnable {
                 }
             }
         }
-
     }
 
     private void userInputLoop(){
