@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.TimeUnit;
 
 import corona.games.util.*;
 import corona.games.util.Message.MessageType;
@@ -21,16 +20,19 @@ public class Client implements Runnable {
     private MessageSender sender;
 
     private LinkedBlockingDeque<Message> outgoingMessages;
-
+    private LinkedBlockingDeque<Message> chatMessages;
+    private ChatRoom chatRoom;
     private long clientID;
     private String username;
+
     public Client(String hostName, int port) {
         this.host = hostName;
         this.port = port;
 
         this.outgoingMessages = new LinkedBlockingDeque<>();
-
-        //set default to an invalid value
+        this.chatMessages = new LinkedBlockingDeque<>();
+        this.chatRoom = new ChatRoom(this.chatMessages, this.outgoingMessages, this.clientID, this.username);
+        // set default to an invalid value
         this.clientID = -1;
     }
 
@@ -50,8 +52,7 @@ public class Client implements Runnable {
         // start up threads to send data
         sender = new MessageSender(this.socket, this.outgoingMessages);
         new Thread(sender).start();
-        
-        
+
         // get username
         // Scanner scanner = new Scanner(System.in);
         // System.out.print("Enter a username:");
@@ -59,29 +60,35 @@ public class Client implements Runnable {
         this.username = getUsername();
         // initial handshake
         // send username
-        sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1,this.username));        
+        sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1, this.username));
         // wait for client id
         Message msg = MessageReciever.read(socket);
-        if(msg.getMessageType() != MessageType.INIT_CLIENT){
+        if (msg.getMessageType() != MessageType.INIT_CLIENT) {
             throw new IllegalArgumentException("Client does not conform to protocal!");
-        }                                        
+        }
 
         this.clientID = msg.getClientID();
-  
-        // start user input loop
-        Thread userLoop = new Thread(()->userInputLoop());
-        userLoop.start();
 
+        // start user input loop
+        Thread userLoop = new Thread(() -> userInputLoop());
+        userLoop.start();
+        // startChatRoom();
         // enter server input loop
         while (!shutdown) {
             Message m = null;
 
             m = MessageReciever.read(socket);
 
-            if(m != null) {
-                switch(m.getMessageType()) {
+            if (m != null) {
+                switch (m.getMessageType()) {
                     case CHAT_MSG:
-                        System.out.println(m.getUsername() + ": " +m.getMessage());
+                        try {
+                            chatMessages.put(m);
+                            System.out.println("put outside message");
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                         break;
                     case INIT_CLIENT:
                         //after handshake, we should never see this command
@@ -120,12 +127,21 @@ public class Client implements Runnable {
         new Thread(){
             @Override
             public void run() {
+                Welcome.setQueuesAndID(chatMessages, outgoingMessages, clientID);
                 javafx.application.Application.launch(Welcome.class);
             }
         }.start();
         return Welcome.getUsername();
     }
 
+    // private void startChatRoom() {
+    //     new Thread(){
+    //         @Override
+    //         public void run() {
+    //             javafx.application.Application.launch(ChatRoom.class);
+    //         }
+    //     }.start();
+    // }
     public static void main(String[] args) {
         Client client = new Client(args[0], Integer.parseInt(args[1]));
 
