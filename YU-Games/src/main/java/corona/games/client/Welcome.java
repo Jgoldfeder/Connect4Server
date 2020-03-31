@@ -147,9 +147,7 @@ public class Welcome extends Application {
                 while(true) {
                     Message m = chatMessages.poll();
                     if(m != null) {
-                        System.out.println("Got hhere with a messeage");
                         transcript.appendText(m.getUsername() + ": " + m.getMessage() + "\n\n");
-                        // stage.show();
                     }
                 }
             }

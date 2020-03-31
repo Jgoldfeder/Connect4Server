@@ -84,7 +84,6 @@ public class Client implements Runnable {
                     case CHAT_MSG:
                         try {
                             chatMessages.put(m);
-                            System.out.println("put outside message");
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
