@@ -32,6 +32,14 @@
         <version>2.8.6</version>
         <scope>provided</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx</artifactId>
+        <version>11</version>
+        <type>pom</type>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -86,7 +94,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>corona.games.Server</mainClass>
+            <mainClass>corona.games.client.Client</mainClass>
           </manifest>
         </archive>
       </configuration>
