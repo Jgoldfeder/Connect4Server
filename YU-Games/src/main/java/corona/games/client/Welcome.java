@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
@@ -34,14 +36,13 @@ public class Welcome extends Application {
     private static long clientID;
     
     private TextArea transcript;
-    private TextField messageInput;
+    private TextField messageInputBox;
     private Button sendButton;
 
     public static String getUsername() {
         try {
             haveUserNameLatch.await();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return username;
@@ -71,13 +72,23 @@ public class Welcome extends Application {
         grid.setVgap(5);
         grid.setHgap(5);
         //Defining the Name text field
-        final TextField name = new TextField();
-        name.setPromptText("Enter your first name.");
-        name.setPrefColumnCount(10);
-        name.getText();
-        GridPane.setConstraints(name, 0, 0);
-        grid.getChildren().add(name);
-
+        final TextField nameEntryField = new TextField();
+        nameEntryField.setPromptText("Enter your first name.");
+        nameEntryField.setPrefColumnCount(10);
+        GridPane.setConstraints(nameEntryField, 0, 0);
+        grid.getChildren().add(nameEntryField);
+        nameEntryField.setOnKeyReleased(key->{
+            if(key.getCode() == KeyCode.ENTER) {
+                String name = nameEntryField.getText();
+                if(name == null || name.equals("")) {
+                    // TODO show in GUI
+                    System.out.println("Can't be empty name");
+                } else {
+                    setUserName(nameEntryField.getText());
+                    stage.close();
+                }
+            }
+        });
         //Defining the Submit button
         Button submit = new Button("Submit");
         GridPane.setConstraints(submit, 1, 0);
@@ -91,7 +102,7 @@ public class Welcome extends Application {
             @Override
             public void handle(Event event) {
                 // TODO Auto-generated method stub
-                setUserName(name.getText());
+                setUserName(nameEntryField.getText());
                 stage.close();
             }
         });
@@ -104,19 +115,42 @@ public class Welcome extends Application {
         this.transcript.setEditable(false);
 
         sendButton = new Button("send");
-        messageInput = new TextField();
-        messageInput.setPrefColumnCount(40);
-        sendButton.setOnAction(new EventHandler<ActionEvent>() {
+        messageInputBox = new TextField();
+        messageInputBox.setPrefColumnCount(40);
+        messageInputBox.setOnKeyReleased(key -> {
+            if(key.getCode() == KeyCode.ENTER) {
+                String message = messageInputBox.getText();
+                messageInputBox.clear();
+
+                if(message == null || message.equals("")) {
+                    // TODO show in GUI
+                    System.out.println("Can't be empty message");
+                } else {
+                    Message m = new Message(MessageType.CHAT_MSG, message, clientID, username);
+                try {
+                    chatMessages.put(m);
+                    outgoingMessages.put(m);
+                    // System.out.println("put a message");
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                }
+            }
+        });
+
+        sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(MouseEvent event) {
                 // TODO Auto-generated method stub
-                String message = messageInput.getText();
+                String message = messageInputBox.getText();
+                messageInputBox.clear();
                 Message m = new Message(MessageType.CHAT_MSG, message, clientID, username);
                 try {
                     chatMessages.put(m);
                     outgoingMessages.put(m);
-                    System.out.println("put a message");
+                    // System.out.println("put a message");
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -126,11 +160,11 @@ public class Welcome extends Application {
 
         });
 
-        messageInput.setEditable(true);
-        messageInput.setDisable(false);
+        messageInputBox.setEditable(true);
+        messageInputBox.setDisable(false);
 
-        HBox bottom = new HBox(8, new Label("YOU SAY:"), messageInput, sendButton);
-        HBox.setHgrow(messageInput, Priority.ALWAYS);
+        HBox bottom = new HBox(8, new Label("YOU SAY:"), messageInputBox, sendButton);
+        HBox.setHgrow(messageInputBox, Priority.ALWAYS);
         // HBox.setMargin(quitButton, new Insets(0,0,0,50));
         bottom.setPadding(new Insets(8));
         bottom.setStyle("-fx-border-color: black; -fx-border-width:2px");
