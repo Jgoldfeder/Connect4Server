@@ -43,7 +43,6 @@ public class Welcome extends Application {
         try {
             haveUserNameLatch.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
         return username;
     }

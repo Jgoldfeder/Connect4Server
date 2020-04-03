@@ -10,3 +10,7 @@ target/
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+# IntelliJ
+.idea/
+YU-Games.iml

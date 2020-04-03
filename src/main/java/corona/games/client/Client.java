@@ -129,8 +129,16 @@ public class Client implements Runnable {
     }
 
     public static void main(String[] args) {
-        Client client = new Client(args[0], Integer.parseInt(args[1]));
-
+        if(args.length != 2) throw new IllegalArgumentException("Usage: java corona.games.client.Client hostname port");
+        String host = args[0];
+        int port;
+        try {
+            port = Integer.parseInt(args[1]);
+        }
+        catch (NumberFormatException e) {
+            throw new IllegalArgumentException("port number must be a valid integer");
+        }
+        Client client = new Client(host, port);
         new Thread(client).run();
     }
 }
