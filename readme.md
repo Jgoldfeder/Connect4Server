@@ -2,25 +2,25 @@
 
 A joint project by Yehuda Goldfeder, Daniel Schaffel, and Noam Annenberg.
 
-
-## If you are using Java 8/have Java FX already built in
-### To build:
+## Building and running the application
+### If you are using Java 8/have Java FX already built in
+#### To build:
 > mvn compile
 
-### To run client:
+#### To run client:
 > java -cp target/classes corona.games.client.Client localhost 80
 
-### To run server:
+#### To run server:
 > java -cp target/classes corona.games.server.Server 80
 
-## Otherwise you need to build a Jar file for the client
-### To Build:
+### Otherwise you need to build a Jar file for the client
+#### To Build:
 > mvn clean compile assembly:single
 
-### To run client:
+#### To run client:
 > java -jar target/YU-Games-1.0-SNAPSHOT-jar-with-dependencies.jar localhost 80
 
-### To run server:
+#### To run server:
 > java -cp target/classes corona.games.server.Server 80
 
 
