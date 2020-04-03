@@ -58,7 +58,7 @@ public class Client implements Runnable {
         // send username
         sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1, this.username));
         // wait for client id
-        Message msg = MessageReciever.read(socket);
+        Message msg = MessageReceiver.read(socket);
         if (msg.getMessageType() != MessageType.INIT_CLIENT) {
             throw new IllegalArgumentException("Client does not conform to protocal!");
         }
@@ -73,7 +73,7 @@ public class Client implements Runnable {
         while (!shutdown) {
             Message m = null;
 
-            m = MessageReciever.read(socket);
+            m = MessageReceiver.read(socket);
 
             if (m != null) {
                 switch (m.getMessageType()) {

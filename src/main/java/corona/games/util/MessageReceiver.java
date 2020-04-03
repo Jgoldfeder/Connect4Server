@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingDeque;
 
-public class MessageReciever implements Runnable {
+public class MessageReceiver implements Runnable {
 
     private Socket socket;
     private LinkedBlockingDeque<Message> incomingMessages;
     private volatile boolean shutdown = false;
 
-    public MessageReciever(Socket s, LinkedBlockingDeque<Message> incomingMessages) {
+    public MessageReceiver(Socket s, LinkedBlockingDeque<Message> incomingMessages) {
         this.socket = s;
         this.incomingMessages = incomingMessages;
     }

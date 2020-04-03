@@ -76,7 +76,7 @@ public class Server
         private final Socket s; 
         private long clientID;
         private Server server;
-        private MessageReciever reciever;
+        private MessageReceiver reciever;
         private MessageSender sender;
         private LinkedBlockingDeque<Message> outgoingMessages;
         private String username;
@@ -107,7 +107,7 @@ public class Server
             
             Message info = null;
             while(true){
-                info = MessageReciever.read(s);
+                info = MessageReceiver.read(s);
                 if(info.getMessageType() == MessageType.EXIT){
                     //remove from chat list
                     server.chatMembers.remove(this);
@@ -142,7 +142,7 @@ public class Server
             try
             { 
                 // get initial client data. This consists of that client's username
-                Message msg = MessageReciever.read(s);
+                Message msg = MessageReceiver.read(s);
                 if(msg.getMessageType() != MessageType.INIT_CLIENT){
                     throw new IllegalArgumentException("Client does not conform to protocal!");
                 }
