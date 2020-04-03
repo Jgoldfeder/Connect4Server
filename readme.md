@@ -6,10 +6,10 @@ A joint project by Yehuda Goldfeder, Daniel Schaffel, and Noam Annenberg.
 > mvn compile
 
 ## To run client:
-> java -cp target\classes\ corona.games.client.Client localhost 80
+> java -cp target/classes corona.games.client.Client localhost 80
 
 ## To run server:
-> java -cp target\classes corona.games.server.Server 80
+> java -cp target/classes corona.games.server.Server 80
 
 
 ## Client Protocal
