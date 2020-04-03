@@ -21,7 +21,6 @@ public class Client implements Runnable {
 
     private LinkedBlockingDeque<Message> outgoingMessages;
     private LinkedBlockingDeque<Message> chatMessages;
-    private ChatRoom chatRoom;
     private long clientID;
     private String username;
 
@@ -31,7 +30,6 @@ public class Client implements Runnable {
 
         this.outgoingMessages = new LinkedBlockingDeque<>();
         this.chatMessages = new LinkedBlockingDeque<>();
-        this.chatRoom = new ChatRoom(this.chatMessages, this.outgoingMessages, this.clientID, this.username);
         // set default to an invalid value
         this.clientID = -1;
     }
