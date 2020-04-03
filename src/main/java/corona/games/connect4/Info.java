@@ -1,4 +1,4 @@
-package corona.games;
+package corona.games.connect4;
 import java.io.Serializable;
 
 class Info implements Serializable{

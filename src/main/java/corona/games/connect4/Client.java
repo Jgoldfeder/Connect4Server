@@ -1,4 +1,4 @@
-package corona.games;
+package corona.games.connect4;
 import java.util.*; 
 import java.net.*; 
 import java.io.*; 
