@@ -46,7 +46,7 @@ Client waits for message back of tpye INIT_CLIENT containing its ID
     - GAME_LIST - a list of every game looking for players. The list is stored in the msg field
     - CHAT_LIST - a list of chat history. How inclusive it is is up to the server
 
-#### Client can sen
+#### Client can send:
     - 
     - SHUT_DOWN - tells the server we are shutting down
     - CHAT_MSG - we are writing to the chat 
