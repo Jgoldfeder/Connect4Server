@@ -62,11 +62,7 @@ public class Welcome extends Application {
         haveUserNameLatch.countDown();
     }
 
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Stage stage = new Stage();
-       //Creating a GridPane container
+    private Scene makeWelcomeWindow(Stage stage) {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(5);
@@ -95,10 +91,8 @@ public class Welcome extends Application {
         grid.getChildren().add(submit);
 
         Scene scene = new Scene(grid);
-        stage.setTitle("Welcome to YU Game Hub");
-        stage.setScene(scene);
         submit.setOnMousePressed(new EventHandler<Event>() {
-
+            
             @Override
             public void handle(Event event) {
                 // TODO Auto-generated method stub
@@ -106,8 +100,11 @@ public class Welcome extends Application {
                 stage.close();
             }
         });
-        stage.showAndWait();
 
+        return scene;
+    }
+
+    private Scene makeChatWindow(Stage stage) {
         this.transcript = new TextArea();
         this.transcript.setPrefRowCount(30);
         this.transcript.setPrefColumnCount(60);
@@ -163,18 +160,18 @@ public class Welcome extends Application {
         messageInputBox.setEditable(true);
         messageInputBox.setDisable(false);
 
-        HBox bottom = new HBox(8, new Label("YOU SAY:"), messageInputBox, sendButton);
+        HBox bottom = new HBox(8, new Label(""), messageInputBox, sendButton);
         HBox.setHgrow(messageInputBox, Priority.ALWAYS);
         // HBox.setMargin(quitButton, new Insets(0,0,0,50));
         bottom.setPadding(new Insets(8));
         bottom.setStyle("-fx-border-color: black; -fx-border-width:2px");
         BorderPane root = new BorderPane(transcript);
         root.setBottom(bottom);
+        
+        return new Scene(root);
+    }
 
-        stage.setScene( new Scene(root) );
-        stage.setTitle("Networked Chat");
-        stage.setResizable(false);
-        // primaryStage.setOnHidden( e -> doQuit() );
+    private void startMessagePolling() {
         new Thread(){
             @Override
             public void run() {
@@ -186,6 +183,22 @@ public class Welcome extends Application {
                 }
             }
         }.start();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Stage stage = new Stage();
+
+        Scene scene = makeWelcomeWindow(stage);
+        stage.setTitle("Welcome to YU Game Hub");
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        Scene chatWindow = makeChatWindow(stage);
+        stage.setScene( chatWindow );
+        stage.setTitle("Networked Chat");
+        stage.setResizable(false);
+        startMessagePolling();
         stage.show();
     }
 

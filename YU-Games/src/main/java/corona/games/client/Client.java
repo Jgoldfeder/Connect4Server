@@ -52,11 +52,7 @@ public class Client implements Runnable {
         // start up threads to send data
         sender = new MessageSender(this.socket, this.outgoingMessages);
         new Thread(sender).start();
-
-        // get username
-        // Scanner scanner = new Scanner(System.in);
-        // System.out.print("Enter a username:");
-        // this.username = scanner.nextLine();
+        startGUI();
         this.username = getUsername();
         // initial handshake
         // send username
@@ -70,9 +66,9 @@ public class Client implements Runnable {
         this.clientID = msg.getClientID();
 
         // start user input loop
-        Thread userLoop = new Thread(() -> userInputLoop());
-        userLoop.start();
-        // startChatRoom();
+        // Thread userLoop = new Thread(() -> userInputLoop());
+        // userLoop.start();
+
         // enter server input loop
         while (!shutdown) {
             Message m = null;
@@ -95,7 +91,6 @@ public class Client implements Runnable {
                         break;
                     default:
                         System.out.println(m.getMessageType());
-                        // System.out.println("Shouldn't mbe here");
                 }
             }
         }
@@ -121,7 +116,7 @@ public class Client implements Runnable {
         }
     }
 
-    private String getUsername() {
+    private void startGUI() {
         new Thread(){
             @Override
             public void run() {
@@ -129,17 +124,12 @@ public class Client implements Runnable {
                 javafx.application.Application.launch(Welcome.class);
             }
         }.start();
+    }
+
+    private String getUsername() {
         return Welcome.getUsername();
     }
 
-    // private void startChatRoom() {
-    //     new Thread(){
-    //         @Override
-    //         public void run() {
-    //             javafx.application.Application.launch(ChatRoom.class);
-    //         }
-    //     }.start();
-    // }
     public static void main(String[] args) {
         Client client = new Client(args[0], Integer.parseInt(args[1]));
 
