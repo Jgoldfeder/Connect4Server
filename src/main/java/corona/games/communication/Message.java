@@ -88,9 +88,6 @@ public class Message {
         if(this.username == null) this.username = "";
         messageContent = this.msg.getBytes();
         usernameBytes = this.username.getBytes();
-        if(this.clientID.toString().equals("")){
-            throw new IllegalArgumentException("EMPTY STRNG!!!!");
-        }
         uuidBytes = this.clientID.toString().getBytes();
         bufferSize = 12 + UUID_BYTE_LENGTH + messageContent.length + usernameBytes.length;
         
@@ -114,17 +111,9 @@ public class Message {
 
         this.messageType = MessageType.values()[buffer.getInt()];
         byte[] uuidBuffer = new byte[UUID_BYTE_LENGTH];
-        buffer.get(uuidBuffer);
-        System.out.println(new String(uuidBuffer));
-        
-        String uuidString = new String(uuidBuffer);
-        
-        try{
-            this.clientID = UUID.fromString(uuidString);
-        }catch (Exception e){
-            throw new IllegalArgumentException("ERROR: String is invalid UUID:"+"<"+uuidString+">");
-        }
-        
+        buffer.get(uuidBuffer);                        
+        this.clientID = UUID.fromString(new String(uuidBuffer));
+
         int msgSize = buffer.getInt();
         byte[] bits = new byte[msgSize];
         buffer.get(bits);
