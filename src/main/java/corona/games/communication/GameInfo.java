@@ -6,11 +6,13 @@ package corona.games.communication;
  */
 public class GameInfo {
     public final String name;
+    public final String username;
     public final int minPlayers;
     public final int maxPlayers;
 
-    public GameInfo(String name, int minPlayers, int maxPlayers) {
+    public GameInfo(String name, String username, int minPlayers, int maxPlayers) {
         this.name = name;
+        this.username = username;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
     }
