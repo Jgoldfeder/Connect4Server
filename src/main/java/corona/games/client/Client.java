@@ -41,10 +41,11 @@ public class Client implements Runnable {
         try {
             this.socket = new Socket(this.host, this.port);
         } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new IllegalArgumentException("could not determine the IP addeess of " + this.host + ":" + this.port);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("Could not connect to the server at " + this.host + ":" + this.port);
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Port number: " + port + " is not valid");
         }
 
         // start up threads to send data
