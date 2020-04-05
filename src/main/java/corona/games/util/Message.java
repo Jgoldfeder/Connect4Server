@@ -7,7 +7,8 @@ public class Message {
 
     private static final int UUID_BYTE_LENGTH = UUID.randomUUID().toString().getBytes().length;
 
-    private static final UUID NEW_CLIENT_ID = UUID.randomUUID();
+    // this is essentially what we use if the ID passed in is Null. Otherwise, serializing would be difficult 
+    private static final UUID NULL_ID = UUID.randomUUID();
     
     public static enum MessageType {
         GARBAGE,
@@ -38,14 +39,14 @@ public class Message {
         this.msg = message;
         this.username = username;
         if(clientID == null){
-            this.clientID = NEW_CLIENT_ID;
+            this.clientID = NULL_ID;
         }else{
             this.clientID = clientID;
         }
     }
 
     public UUID getClientID(){
-        if(clientID == NEW_CLIENT_ID){
+        if(clientID == NULL_ID){
             return null;
         }
         return clientID;
