@@ -11,7 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.UUID;
 
-import corona.games.util.Message;
+import corona.games.communication.Message;
 
 
 public class GUIManager extends Application {

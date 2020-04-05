@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.*; 
 import java.net.*; 
 import java.util.concurrent.locks.ReentrantLock;
-import corona.games.util.*;
-import com.google.gson.Gson;
+import corona.games.communication.*;
+
 import java.util.concurrent.LinkedBlockingDeque;
-import static corona.games.util.Message.MessageType;
+import static corona.games.communication.Message.MessageType;
 import java.util.UUID;
 
 
