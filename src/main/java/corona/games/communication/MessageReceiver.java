@@ -18,8 +18,8 @@ public class MessageReceiver implements Runnable {
     public void shutdown() {
         this.shutdown = true;
     }
-    
-    
+
+
     public static Message read(Socket socket){
         Message  msg = null;
         // This number is kinda random have to really fine tune ideal message size
@@ -38,13 +38,13 @@ public class MessageReceiver implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } 
+        }
 
         return msg;
     }
-    
-    
-    
+
+
+
     @Override
     public void run() {
         while (!shutdown) {
@@ -59,5 +59,27 @@ public class MessageReceiver implements Runnable {
             }
         }
     }
+
+// this should replace the above methods
+//    @Override
+//    public void run() {
+//        while (!shutdown) {
+//            if (socket.isConnected()) {
+//                try {
+//                    byte[] buffer = new byte[40960];
+//                    int i = socket.getInputStream().read(buffer);
+//                    if(i == -1) continue;
+//                    Message msg = new Message(buffer);
+//                    if(msg.getMessageType() != Message.MessageType.GARBAGE) incomingMessages.put(msg);
+//                }
+//                catch(IOException e) {
+//                    e.printStackTrace();
+//                }
+//                catch (InterruptedException e) {
+//                }
+//
+//            }
+//        }
+//    }
 
 }
