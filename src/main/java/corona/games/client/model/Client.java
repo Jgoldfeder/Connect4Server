@@ -7,8 +7,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.UUID;
 
 import corona.games.client.controller.GUIManager;
-import corona.games.util.*;
-import corona.games.util.Message.MessageType;
+import corona.games.communication.*;
+import corona.games.communication.Message.MessageType;
 
 public class Client implements Runnable {
 

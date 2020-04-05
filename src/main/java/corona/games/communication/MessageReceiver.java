@@ -1,4 +1,4 @@
-package corona.games.util;
+package corona.games.communication;
 
 import java.io.IOException;
 import java.net.Socket;

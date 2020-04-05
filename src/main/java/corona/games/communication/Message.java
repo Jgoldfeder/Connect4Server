@@ -1,4 +1,4 @@
-package corona.games.util;
+package corona.games.communication;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;

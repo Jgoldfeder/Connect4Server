@@ -18,8 +18,8 @@ import javafx.stage.Stage;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import corona.games.util.Message;
-import corona.games.util.Message.MessageType;
+import corona.games.communication.Message;
+import corona.games.communication.Message.MessageType;
 public class ChatBox {
 
     private TextArea transcript;
