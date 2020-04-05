@@ -32,7 +32,9 @@ import javafx.stage.WindowEvent;
 public class Welcome extends Application {
 
     private static String username;
-    private static final CountDownLatch haveUserNameLatch = new CountDownLatch(1);
+    private static String hostname;
+    private static int port;
+    private static final CountDownLatch haveStartUpInfo = new CountDownLatch(1);
     private static LinkedBlockingDeque<Message> chatMessages;
     private static LinkedBlockingDeque<Message> outgoingMessages;
     private static long clientID;
@@ -43,10 +45,26 @@ public class Welcome extends Application {
 
     public static String getUsername() {
         try {
-            haveUserNameLatch.await();
+            haveStartUpInfo.await();
         } catch (InterruptedException e) {
         }
         return username;
+    }
+
+    public static String getHostname() {
+        try {
+            haveStartUpInfo.await();
+        } catch (InterruptedException e) {
+        }
+        return hostname;
+    }
+
+    public static int getPort() {
+        try {
+            haveStartUpInfo.await();
+        } catch (InterruptedException e) {
+        }
+        return port;
     }
 
     public static void setQueuesAndID(LinkedBlockingDeque<Message> chatMessage, LinkedBlockingDeque<Message> outgoingMessage,
@@ -58,9 +76,12 @@ public class Welcome extends Application {
 
 
 
-    private static void setUserName(String uname) {
+    private static void setUserInfo(String uname, String hname, String pnum) {
         username = uname;
-        haveUserNameLatch.countDown();
+        hostname = hname;
+        // TODO: deal with error handling
+        port = (pnum.length() == 0) ? 0 : Integer.parseInt(pnum);
+        haveStartUpInfo.countDown();
     }
 
     private Scene makeWelcomeWindow(Stage stage) {
@@ -70,14 +91,32 @@ public class Welcome extends Application {
         grid.setHgap(5);
         //Defining the Name text field
         Label nameLabel = new Label("Enter your Name:");
+        GridPane.setConstraints(nameLabel, 0, 0);
+        grid.getChildren().add(nameLabel);
         final TextField nameEntryField = new TextField();
         nameEntryField.setPromptText("John");
         nameEntryField.setFocusTraversable(false);
         nameEntryField.setPrefColumnCount(10);
-        GridPane.setConstraints(nameLabel, 0, 0);
-        grid.getChildren().add(nameLabel);
         GridPane.setConstraints(nameEntryField, 0, 1);
         grid.getChildren().add(nameEntryField);
+        // host info
+        Label hostLabel = new Label("Enter the host name:");
+        GridPane.setConstraints(hostLabel, 0, 2);
+        grid.getChildren().add(hostLabel);
+        final TextField hostEntryField = new TextField();
+        hostEntryField.setPrefColumnCount(10);
+        GridPane.setConstraints(hostEntryField, 0, 3);
+        grid.getChildren().add(hostEntryField);
+        // port info
+        Label portLabel = new Label("Enter the port number:");
+        GridPane.setConstraints(portLabel, 0, 4);
+        grid.getChildren().add(portLabel);
+        final TextField portEntryField = new TextField();
+        portEntryField.setPrefColumnCount(10);
+        GridPane.setConstraints(portEntryField, 0, 5);
+        grid.getChildren().add(portEntryField);
+
+        // allow the user to submit by pressing enter on the name field
         nameEntryField.setOnKeyReleased(key->{
             if(key.getCode() == KeyCode.ENTER) {
                 String name = nameEntryField.getText();
@@ -85,14 +124,15 @@ public class Welcome extends Application {
                     // TODO show in GUI
                     System.out.println("Can't be empty name");
                 } else {
-                    setUserName(nameEntryField.getText());
+                    setUserInfo(nameEntryField.getText(), hostEntryField.getText(), portEntryField.getText());
                     stage.close();
                 }
             }
         });
+
         //Defining the Submit button
         Button submit = new Button("Submit");
-        GridPane.setConstraints(submit, 1, 1);
+        GridPane.setConstraints(submit, 1, 6);
         grid.getChildren().add(submit);
 
         Scene scene = new Scene(grid);
@@ -101,7 +141,7 @@ public class Welcome extends Application {
             @Override
             public void handle(Event event) {
                 // TODO Auto-generated method stub
-                setUserName(nameEntryField.getText());
+                setUserInfo(nameEntryField.getText(), hostEntryField.getText(), portEntryField.getText());
                 stage.close();
             }
         });

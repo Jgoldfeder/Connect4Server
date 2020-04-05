@@ -13,8 +13,8 @@ public class Client implements Runnable {
 
     private volatile boolean shutdown = false;
 
-    private final String host;
-    private final int port;
+    private String host;
+    private int port;
     private Socket socket;
 
     private MessageSender sender;
@@ -36,6 +36,12 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
+        startGUI();
+        this.username = getUsername();
+        if(this.host == null) {
+            this.host = getHostName();
+            this.port = getPortNumber();
+        }
 
         // connect to server
         try {
@@ -51,8 +57,7 @@ public class Client implements Runnable {
         // start up threads to send data
         sender = new MessageSender(this.socket, this.outgoingMessages);
         new Thread(sender).start();
-        startGUI();
-        this.username = getUsername();
+
         // initial handshake
         // send username
         sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1, this.username));
@@ -128,13 +133,18 @@ public class Client implements Runnable {
     private String getUsername() {
         return Welcome.getUsername();
     }
+    private String getHostName() {
+        return Welcome.getHostname();
+    }
+    private int getPortNumber() {
+        return Welcome.getPort();
+    }
 
     public static void main(String[] args) {
-        if(args.length != 2) throw new IllegalArgumentException("Usage: java corona.games.client.Client hostname port");
-        String host = args[0];
+        String host = (args.length == 2) ? args[0] : null;
         int port;
         try {
-            port = Integer.parseInt(args[1]);
+            port = (args.length == 2) ? Integer.parseInt(args[1]) : 0;
         }
         catch (NumberFormatException e) {
             throw new IllegalArgumentException("port number must be a valid integer");
