@@ -114,7 +114,6 @@ public class Message {
 
         this.messageType = MessageType.values()[buffer.getInt()];
         if(this.messageType == MessageType.GARBAGE) {
-            System.out.println("Garbage message");
             return; 
         } 
     
