@@ -113,6 +113,11 @@ public class Message {
         buffer.clear();
 
         this.messageType = MessageType.values()[buffer.getInt()];
+        if(this.messageType == MessageType.GARBAGE) {
+            System.out.println("Garbage message");
+            return; 
+        } 
+    
         byte[] uuidBuffer = new byte[UUID_BYTE_LENGTH];
         buffer.get(uuidBuffer);
         System.out.println(new String(uuidBuffer));
