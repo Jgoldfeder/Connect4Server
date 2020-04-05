@@ -70,10 +70,6 @@ public class Client implements Runnable {
 
         this.clientID = msg.getClientID();
 
-        // start user input loop
-        // Thread userLoop = new Thread(() -> userInputLoop());
-        // userLoop.start();
-
         // enter server input loop
         while (!shutdown) {
             Message m = null;
@@ -125,20 +121,20 @@ public class Client implements Runnable {
         new Thread(){
             @Override
             public void run() {
-                Welcome.setQueuesAndID(chatMessages, outgoingMessages, clientID);
-                javafx.application.Application.launch(Welcome.class);
+                GUIManager.setQueuesAndID(chatMessages, outgoingMessages, clientID);
+                javafx.application.Application.launch(GUIManager.class);
             }
         }.start();
     }
 
     private String getUsername() {
-        return Welcome.getUsername();
+        return GUIManager.getUsername();
     }
     private String getHostName() {
-        return Welcome.getHostname();
+        return GUIManager.getHostname();
     }
     private int getPortNumber() {
-        return Welcome.getPort();
+        return GUIManager.getPort();
     }
 
     public static void main(String[] args) {

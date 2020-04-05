@@ -54,7 +54,7 @@ public class WelcomeBox {
                     // TODO show in GUI
                     System.out.println("Can't be empty name");
                 } else {
-                    Welcome.setUserInfo(nameEntryField.getText(), hostEntryField.getText(), portEntryField.getText());
+                    GUIManager.setUserInfo(nameEntryField.getText(), hostEntryField.getText(), portEntryField.getText());
                     stage.close();
                 }
             }
@@ -72,7 +72,7 @@ public class WelcomeBox {
             @Override
             public void handle(Event event) {
                 // TODO Auto-generated method stub
-                Welcome.setUserInfo(nameEntryField.getText(), hostEntryField.getText(), portEntryField.getText());
+                GUIManager.setUserInfo(nameEntryField.getText(), hostEntryField.getText(), portEntryField.getText());
                 stage.close();
             }
         });
