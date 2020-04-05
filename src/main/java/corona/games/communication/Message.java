@@ -113,8 +113,15 @@ public class Message {
         byte[] uuidBuffer = new byte[UUID_BYTE_LENGTH];
         buffer.get(uuidBuffer);
         System.out.println(new String(uuidBuffer));
-        this.clientID = UUID.fromString(new String(uuidBuffer));
-
+        
+        String uuidString = new String(uuidBuffer);
+        
+        try{
+            this.clientID = UUID.fromString(uuidString);
+        }catch (Exception e){
+            throw new IllegalArgumentException("ERROR: String is invalid UUID:"+"<"+uuidString+">");
+        }
+        
         int msgSize = buffer.getInt();
         byte[] bits = new byte[msgSize];
         buffer.get(bits);
