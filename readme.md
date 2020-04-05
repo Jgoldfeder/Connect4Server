@@ -35,7 +35,7 @@ A joint project by Yehuda Goldfeder, Daniel Schaffel, and Noam Annenberg.
     - CREATE_GAME
     - JOIN_GAME
     - REQUEST_CHAT_LIST
-    - CHAT LIST
+    - CHAT_LIST
     - REQUEST_GAME_LIST
     - GAME_LIST
     - START_GAME
