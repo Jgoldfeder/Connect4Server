@@ -13,49 +13,28 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
-<<<<<<< HEAD
 import javafx.stage.Stage;
 
-=======
-import javafx.geometry.Insets;
 import java.util.UUID;
->>>>>>> aea81138279e84afa0cdc8f79885912a2251f9c0
 import java.util.concurrent.LinkedBlockingDeque;
 
 import corona.games.util.Message;
 import corona.games.util.Message.MessageType;
-<<<<<<< HEAD
 public class ChatRoom {
-=======
-
-public class ChatRoom extends Application {
-
-    private static LinkedBlockingDeque<Message> chatMessages;
-    private static LinkedBlockingDeque<Message> outgoingMessages;
-    UUID clientID;
-    String username;
->>>>>>> aea81138279e84afa0cdc8f79885912a2251f9c0
 
     private TextArea transcript;
     private TextField messageInputBox;
     private Button sendButton;
     private LinkedBlockingDeque<Message> chatMessages;
     private LinkedBlockingDeque<Message> outgoingMessages;
-
-<<<<<<< HEAD
-    private long clientID;
+    private UUID clientID;
     private String username;
 
-    public ChatRoom(LinkedBlockingDeque<Message> chatMessagesQ, LinkedBlockingDeque<Message> outgoingMessagesQ, 
-    TextArea t, long clientID, String username) {
-        this.chatMessages = chatMessagesQ;
-        this.outgoingMessages = outgoingMessagesQ;
-        this.transcript = t;
-=======
-    public ChatRoom(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages,
+    public ChatRoom(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
             UUID clientID, String username) {
         this.chatMessages = chatMessages;
->>>>>>> aea81138279e84afa0cdc8f79885912a2251f9c0
+        this.outgoingMessages = outgoingMessages;
+        this.transcript = transcript;
         this.clientID = clientID;
         this.username = username;
     }
