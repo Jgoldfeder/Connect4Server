@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class WelcomeBox implements Loggable {
 
     private Logger logger;
-    public static void display() {
+    public void display() {
         Stage stage = new Stage();
         stage.setOnCloseRequest(e -> {
             Platform.exit();

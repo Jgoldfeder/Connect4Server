@@ -93,7 +93,8 @@ public class GUIManager extends Application implements Loggable{
             System.exit(0);
         });
 
-        WelcomeBox.display();
+        WelcomeBox wb = new WelcomeBox();
+        wb.display();
 
         startMessagePolling();
 
