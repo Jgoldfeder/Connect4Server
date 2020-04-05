@@ -96,17 +96,6 @@ public class Client implements Runnable {
             }
         }
     }
-
-    private void userInputLoop(){
-
-        Scanner scanner = new Scanner(System.in);
-
-        while (!shutdown) {  
-            String response = scanner.nextLine();
-            sendMessage(new Message(MessageType.CHAT_MSG,response,clientID,this.username));
-        }
-        
-    }
     
     public void sendMessage(Message m) {
         try {
