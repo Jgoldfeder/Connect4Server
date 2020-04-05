@@ -1,6 +1,7 @@
 package corona.games.client.view;
 
 import corona.games.client.controller.GUIManager;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +17,11 @@ public class WelcomeBox {
 
     public static void display() {
         Stage stage = new Stage();
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setVgap(20);
