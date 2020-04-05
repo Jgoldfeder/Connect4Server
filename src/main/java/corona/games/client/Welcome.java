@@ -67,10 +67,14 @@ public class Welcome extends Application {
         grid.setVgap(5);
         grid.setHgap(5);
         //Defining the Name text field
+        Label nameLabel = new Label("Enter your Name:");
         final TextField nameEntryField = new TextField();
-        nameEntryField.setPromptText("Enter your first name.");
+        nameEntryField.setPromptText("John");
+        nameEntryField.setFocusTraversable(false);
         nameEntryField.setPrefColumnCount(10);
-        GridPane.setConstraints(nameEntryField, 0, 0);
+        GridPane.setConstraints(nameLabel, 0, 0);
+        grid.getChildren().add(nameLabel);
+        GridPane.setConstraints(nameEntryField, 0, 1);
         grid.getChildren().add(nameEntryField);
         nameEntryField.setOnKeyReleased(key->{
             if(key.getCode() == KeyCode.ENTER) {
@@ -86,7 +90,7 @@ public class Welcome extends Application {
         });
         //Defining the Submit button
         Button submit = new Button("Submit");
-        GridPane.setConstraints(submit, 1, 0);
+        GridPane.setConstraints(submit, 1, 1);
         grid.getChildren().add(submit);
 
         Scene scene = new Scene(grid);
