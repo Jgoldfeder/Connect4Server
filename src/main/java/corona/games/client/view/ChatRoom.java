@@ -1,4 +1,4 @@
-package corona.games.client;
+package corona.games.client.view;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;

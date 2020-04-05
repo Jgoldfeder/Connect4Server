@@ -1,5 +1,6 @@
-package corona.games.client;
+package corona.games.client.view;
 
+import corona.games.client.controller.GUIManager;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

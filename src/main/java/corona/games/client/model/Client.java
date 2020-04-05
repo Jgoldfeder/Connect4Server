@@ -1,12 +1,12 @@
-package corona.games.client;
+package corona.games.client.model;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.UUID;
 
+import corona.games.client.controller.GUIManager;
 import corona.games.util.*;
 import corona.games.util.Message.MessageType;
 

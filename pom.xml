@@ -93,7 +93,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>corona.games.client.Client</mainClass>
+            <mainClass>corona.games.client.model.Client</mainClass>
           </manifest>
         </archive>
       </configuration>
@@ -103,7 +103,7 @@
 	<artifactId>javafx-maven-plugin</artifactId>
 	<version>0.0.4</version>
 	<configuration>
-		<mainClass>corona.games.client.Client</mainClass>
+		<mainClass>corona.games.client.model.Client</mainClass>
 		<commandlineArgs>0.tcp.ngrok.io  13086</commandlineArgs>
 	</configuration>
     </plugin>
@@ -112,7 +112,7 @@
 		<configuration>
 			<archive>
 				<manifest>
-					<mainClass>corona.games.client.Client</mainClass>
+					<mainClass>corona.games.client.model.Client</mainClass>
 				</manifest>
 			</archive>
 			<descriptorRefs>
