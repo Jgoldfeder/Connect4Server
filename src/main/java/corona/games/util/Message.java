@@ -5,7 +5,22 @@ import java.nio.ByteBuffer;
 public class Message {
 
     public static enum MessageType {
-        GARBAGE, INIT_CLIENT, CHAT_MSG, EXIT;
+        GARBAGE,
+        INIT_CLIENT,CHAT_MSG,
+        SHUT_DOWN,
+        EXIT_PHASE,
+        CREATE_GAME,
+        JOIN_GAME,
+        REQUEST_CHAT_LIST,
+        CHAT_LIST,
+        REQUEST_GAME_LIST,
+        GAME_LIST,
+        START_GAME,
+        GAMEPLAY_INFO,
+        CONFIRM_READY,
+        UNCONFIRM_READY,
+        PLAYER_HAS_JOINED,
+        PLAYER_HAS_LEFT;
     }
     
     private long clientID = 0;

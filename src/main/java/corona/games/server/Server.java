@@ -108,7 +108,7 @@ public class Server
             Message info = null;
             while(true){
                 info = MessageReceiver.read(s);
-                if(info.getMessageType() == MessageType.EXIT){
+                if(info.getMessageType() == MessageType.SHUT_DOWN){
                     //remove from chat list
                     server.chatMembers.remove(this);
                     break;
