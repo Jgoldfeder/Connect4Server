@@ -1,16 +1,21 @@
 package corona.games.client.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.UUID;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import corona.games.client.controller.GUIManager;
 import corona.games.communication.*;
 import corona.games.communication.Message.MessageType;
+import corona.games.logger.ILogger;
 
-public class Client implements Runnable {
+public class Client implements Runnable, ILogger {
 
     private volatile boolean shutdown = false;
 
@@ -24,6 +29,8 @@ public class Client implements Runnable {
     private LinkedBlockingDeque<Message> chatMessages;
     private UUID clientID;
     private String username;
+
+    private Logger logger;
 
     public Client(String hostName, int port) {
         this.host = hostName;
@@ -126,6 +133,17 @@ public class Client implements Runnable {
         return GUIManager.getPort();
     }
 
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public void log(String msg) {
+        if(this.logger == null) return;
+        else this.logger.info(msg);
+    }
+
     public static void main(String[] args) {
         String host = (args.length == 2) ? args[0] : null;
         int port;
@@ -135,7 +153,29 @@ public class Client implements Runnable {
         catch (NumberFormatException e) {
             throw new IllegalArgumentException("port number must be a valid integer");
         }
+        Logger logger = initLogger();
         Client client = new Client(host, port);
+        client.setLogger(logger);
         new Thread(client).run();
+    }
+
+    private static Logger initLogger() {
+        Logger logger;
+        try {
+            logger = Logger.getLogger("Client Logger");
+            File dir = new File("src/test/logs/client");
+            if(!dir.exists()) {
+                dir.mkdirs();
+            }
+            FileHandler fh = new FileHandler("src/test/logs/client.log");
+            logger.setUseParentHandlers(false);
+            logger.addHandler(fh);
+            fh.setFormatter(new SimpleFormatter());
+            logger.info("Logger Configured");
+        } catch (IOException e) {
+            logger = null;
+        }
+
+        return logger;
     }
 }
