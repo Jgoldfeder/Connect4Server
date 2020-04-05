@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.UUID;
 
 import corona.games.util.Message;
 import corona.games.util.Message.MessageType;
@@ -37,7 +38,7 @@ public class Welcome extends Application {
     private static final CountDownLatch haveStartUpInfo = new CountDownLatch(1);
     private static LinkedBlockingDeque<Message> chatMessages;
     private static LinkedBlockingDeque<Message> outgoingMessages;
-    private static long clientID;
+    private static UUID clientID;
     
     private TextArea transcript;
     private TextField messageInputBox;
@@ -68,7 +69,7 @@ public class Welcome extends Application {
     }
 
     public static void setQueuesAndID(LinkedBlockingDeque<Message> chatMessage, LinkedBlockingDeque<Message> outgoingMessage,
-    long clientId) {
+    UUID clientId) {
         chatMessages = chatMessage;
         outgoingMessages = outgoingMessage;
         clientID = clientId;

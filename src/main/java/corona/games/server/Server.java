@@ -8,9 +8,12 @@ import corona.games.util.*;
 import com.google.gson.Gson;
 import java.util.concurrent.LinkedBlockingDeque;
 import static corona.games.util.Message.MessageType;
+import java.util.UUID;
+
+
 public class Server  
 { 
-    private long clientIDCounter;    
+    private long clientCounter;    
     private ReentrantLock lock = new ReentrantLock();
     private int port;
     private ArrayList<ClientHandler> chatMembers = new ArrayList<>();
@@ -27,7 +30,7 @@ public class Server
   
     private Server(int port){
         this.port = port;
-        clientIDCounter = 0;
+        clientCounter = 0;
     }
       
     private void run(){        
@@ -48,8 +51,8 @@ public class Server
                   
                 System.out.println("A new client is connected : " + s); 
                 
-                long clientID = clientIDCounter;
-                clientIDCounter++;
+                UUID clientID = UUID.randomUUID();
+                clientCounter++;
                   
                 System.out.println("Assigning new thread for this client"); 
                 // create a new thread object 
@@ -74,7 +77,7 @@ public class Server
         private ObjectInputStream odis = null; 
         private ObjectOutputStream odos = null; 
         private final Socket s; 
-        private long clientID;
+        private UUID clientID;
         private Server server;
         private MessageReceiver reciever;
         private MessageSender sender;
@@ -82,7 +85,7 @@ public class Server
         private String username;
         
         // Constructor 
-        private ClientHandler(Server server,Socket s,long clientID)  
+        private ClientHandler(Server server,Socket s,UUID clientID)  
         { 
             this.server= server;
             this.s = s; 

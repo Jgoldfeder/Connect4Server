@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.UUID;
 
 import corona.games.util.*;
 import corona.games.util.Message.MessageType;
@@ -21,7 +22,7 @@ public class Client implements Runnable {
 
     private LinkedBlockingDeque<Message> outgoingMessages;
     private LinkedBlockingDeque<Message> chatMessages;
-    private long clientID;
+    private UUID clientID;
     private String username;
 
     public Client(String hostName, int port) {
@@ -31,7 +32,7 @@ public class Client implements Runnable {
         this.outgoingMessages = new LinkedBlockingDeque<>();
         this.chatMessages = new LinkedBlockingDeque<>();
         // set default to an invalid value
-        this.clientID = -1;
+        this.clientID = null;
     }
 
     @Override
@@ -60,7 +61,7 @@ public class Client implements Runnable {
 
         // initial handshake
         // send username
-        sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, -1, this.username));
+        sendMessage(new Message(Message.MessageType.INIT_CLIENT, this.username, null, this.username));
         // wait for client id
         Message msg = MessageReceiver.read(socket);
         if (msg.getMessageType() != MessageType.INIT_CLIENT) {

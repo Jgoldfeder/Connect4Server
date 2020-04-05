@@ -15,7 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.geometry.Insets;
-
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import corona.games.util.Message;
@@ -25,7 +25,7 @@ public class ChatRoom extends Application {
 
     private static LinkedBlockingDeque<Message> chatMessages;
     private static LinkedBlockingDeque<Message> outgoingMessages;
-    long clientID;
+    UUID clientID;
     String username;
 
     private TextArea transcript;
@@ -33,7 +33,7 @@ public class ChatRoom extends Application {
     private Button sendButton;
 
     public ChatRoom(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages,
-            long clientID, String username) {
+            UUID clientID, String username) {
         this.chatMessages = chatMessages;
         this.clientID = clientID;
         this.username = username;
