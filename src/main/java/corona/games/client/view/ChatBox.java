@@ -20,7 +20,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import corona.games.util.Message;
 import corona.games.util.Message.MessageType;
-public class ChatRoom {
+public class ChatBox {
 
     private TextArea transcript;
     private TextField messageInputBox;
@@ -30,8 +30,8 @@ public class ChatRoom {
     private UUID clientID;
     private String username;
 
-    public ChatRoom(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
-            UUID clientID, String username) {
+    public ChatBox(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
+                   UUID clientID, String username) {
         this.chatMessages = chatMessages;
         this.outgoingMessages = outgoingMessages;
         this.transcript = transcript;

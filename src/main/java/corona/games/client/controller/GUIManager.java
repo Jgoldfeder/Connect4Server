@@ -1,6 +1,6 @@
 package corona.games.client.controller;
 
-import corona.games.client.view.ChatRoom;
+import corona.games.client.view.ChatBox;
 import corona.games.client.view.WelcomeBox;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -93,7 +93,7 @@ public class GUIManager extends Application {
 
         startMessagePolling();
 
-        ChatRoom cr = new ChatRoom(chatMessages, outgoingMessages, transcript, clientID, username);
+        ChatBox cr = new ChatBox(chatMessages, outgoingMessages, transcript, clientID, username);
         cr.display();
     }
 
