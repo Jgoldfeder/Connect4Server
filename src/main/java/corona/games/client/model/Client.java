@@ -13,9 +13,9 @@ import java.util.logging.SimpleFormatter;
 import corona.games.client.controller.GUIManager;
 import corona.games.communication.*;
 import corona.games.communication.Message.MessageType;
-import corona.games.logger.ILogger;
+import corona.games.logger.Loggable;
 
-public class Client implements Runnable, ILogger {
+public class Client implements Runnable, Loggable {
 
     private volatile boolean shutdown = false;
 
@@ -163,11 +163,11 @@ public class Client implements Runnable, ILogger {
         Logger logger;
         try {
             logger = Logger.getLogger("Client Logger");
-            File dir = new File("src/test/logs/client");
+            File dir = new File("target/logs/client");
             if(!dir.exists()) {
                 dir.mkdirs();
             }
-            FileHandler fh = new FileHandler("src/test/logs/client.log");
+            FileHandler fh = new FileHandler("target/logs/client.log");
             logger.setUseParentHandlers(false);
             logger.addHandler(fh);
             fh.setFormatter(new SimpleFormatter());

@@ -17,10 +17,12 @@ import javafx.stage.Stage;
 
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.logging.Logger;
 
 import corona.games.communication.Message;
 import corona.games.communication.Message.MessageType;
-public class ChatBox {
+import corona.games.logger.Loggable;
+public class ChatBox implements Loggable {
 
     private TextArea transcript;
     private TextField messageInputBox;
@@ -30,6 +32,7 @@ public class ChatBox {
     private UUID clientID;
     private String username;
 
+    private Logger logger;
     public ChatBox(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
                    UUID clientID, String username) {
         this.chatMessages = chatMessages;
@@ -111,5 +114,16 @@ public class ChatBox {
 
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public void log(String msg) {
+        if(this.logger == null) return;
+        else this.logger.info(msg);
     }
 }

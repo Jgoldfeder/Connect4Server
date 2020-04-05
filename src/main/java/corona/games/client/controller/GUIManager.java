@@ -9,12 +9,14 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.logging.Logger;
 import java.util.UUID;
 
 import corona.games.communication.Message;
+import corona.games.logger.Loggable;
 
 
-public class GUIManager extends Application {
+public class GUIManager extends Application implements Loggable{
 
     private static String username;
     private static String hostname;
@@ -26,6 +28,8 @@ public class GUIManager extends Application {
     
     private TextArea transcript;
 
+    private Logger logger;
+    
     public static String getUsername() {
         try {
             haveStartUpInfo.await();
@@ -95,6 +99,17 @@ public class GUIManager extends Application {
 
         ChatBox cr = new ChatBox(chatMessages, outgoingMessages, transcript, clientID, username);
         cr.display();
+    }
+
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public void log(String msg) {
+        if(this.logger == null) return;
+        else this.logger.info(msg);
     }
 
     public static void main(String[] args) {

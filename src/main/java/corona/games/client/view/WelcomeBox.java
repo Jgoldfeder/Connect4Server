@@ -1,6 +1,9 @@
 package corona.games.client.view;
 
+import java.util.logging.Logger;
+
 import corona.games.client.controller.GUIManager;
+import corona.games.logger.Loggable;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,8 +16,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class WelcomeBox {
+public class WelcomeBox implements Loggable {
 
+    private Logger logger;
     public static void display() {
         Stage stage = new Stage();
         stage.setOnCloseRequest(e -> {
@@ -85,5 +89,16 @@ public class WelcomeBox {
         });
         
         stage.showAndWait();
+    }
+
+    @Override
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
+    @Override
+    public void log(String msg) {
+        if(this.logger == null) return;
+        else this.logger.info(msg);
     }
 }
