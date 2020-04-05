@@ -88,6 +88,9 @@ public class Message {
         if(this.username == null) this.username = "";
         messageContent = this.msg.getBytes();
         usernameBytes = this.username.getBytes();
+        if(this.clientID.toString().equals("")){
+            throw new IllegalArgumentException("EMPTY STRNG!!!!");
+        }
         uuidBytes = this.clientID.toString().getBytes();
         bufferSize = 12 + UUID_BYTE_LENGTH + messageContent.length + usernameBytes.length;
         
