@@ -3,6 +3,7 @@ package corona.games.client;
 import java.security.Principal;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import corona.games.util.Message;
 import corona.games.util.Message.MessageType;
+import javafx.stage.WindowEvent;
 
 public class Welcome extends Application {
 
@@ -190,6 +192,11 @@ public class Welcome extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
         Stage stage = new Stage();
 
         Scene scene = makeWelcomeWindow(stage);
@@ -197,12 +204,12 @@ public class Welcome extends Application {
         stage.setScene(scene);
         stage.showAndWait();
 
-        Scene chatWindow = makeChatWindow(stage);
-        stage.setScene( chatWindow );
-        stage.setTitle("Networked Chat");
-        stage.setResizable(false);
+        Scene chatWindow = makeChatWindow(primaryStage);
+        primaryStage.setScene( chatWindow );
+        primaryStage.setTitle("Networked Chat");
+        primaryStage.setResizable(false);
         startMessagePolling();
-        stage.show();
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
