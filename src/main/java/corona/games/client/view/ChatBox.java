@@ -5,6 +5,7 @@ import javafx.beans.binding.MapExpression;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -131,6 +132,9 @@ public class ChatBox implements Loggable {
 
     // TODO make pop up screen for configuration
     private void startGame() {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(new TextArea()));
+        stage.show();
         
     }
 
@@ -138,19 +142,14 @@ public class ChatBox implements Loggable {
         openGames = new ListView<>();
         joinGame = new Button("Join Game");
         joinGame.setOnAction(e -> joinGame());
-        openGames.getItems().addAll(new GameInfo("Othello", "firstgame", "Daniel", 3, 2, 4));
+        GameInfo gm = new GameInfo("Othello", "firstgame", "Daniel", 3, 2, 4);
+        // openGames.getItems().addAll(gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm);
 
     }
 
     private void joinGame() {
         String gameJoined = openGames.getSelectionModel().getSelectedItem().gameName;
         System.out.println("Joined " + gameJoined);
-    }
-
-    private String modifyGame(String g, String s) {
-        if(g.equals(s))
-            return g + "1";
-        return g;
     }
 
     private BorderPane setUpLayout() {
@@ -163,7 +162,8 @@ public class ChatBox implements Loggable {
         VBox rightLayout = new VBox(15,new Label("Start new game"),gameChoices,createGame);
         rightLayout.setStyle("-fx-border-color: blue; -fx-border-width:1px");
 
-        VBox centerLayout = new VBox(15, new Label("Open Games"), openGames,joinGame);
+        VBox centerLayout = new VBox(15, new Label("Open Games"), openGames,joinGame);  
+        centerLayout.setAlignment(Pos.CENTER);
         BorderPane root = new BorderPane();
         root.setLeft(transcript);
         root.setRight(rightLayout);

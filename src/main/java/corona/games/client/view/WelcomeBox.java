@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -75,7 +76,7 @@ public class WelcomeBox implements Loggable {
         Button submit = new Button("Submit");
         GridPane.setConstraints(submit, 1, 6);
         grid.getChildren().add(submit);
-
+        grid.setAlignment(Pos.BASELINE_CENTER);
         Scene scene = new Scene(grid);
         stage.setScene(scene);
         submit.setOnMousePressed(new EventHandler<Event>() {
