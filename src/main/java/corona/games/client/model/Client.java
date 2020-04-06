@@ -95,8 +95,7 @@ public class Client implements Runnable, Loggable {
                         break;
                     case INIT_CLIENT:
                         //after handshake, we should never see this command
-                        System.out.println("Shouldn't be here");
-                        break;
+                        this.clientID = m.getClientID();
                     default:
                         System.out.println(m.getMessageType());
                 }
