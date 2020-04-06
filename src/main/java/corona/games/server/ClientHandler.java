@@ -14,7 +14,7 @@ import java.util.UUID;
 class ClientHandler implements Runnable  
 { 
     private Socket socket; 
-    private UUID clientID;
+    private final UUID clientID;
     private Server server;
     private MessageReceiver reciever;
     private MessageSender sender;
@@ -46,7 +46,9 @@ class ClientHandler implements Runnable
     
     public Message readMessage(long timeoutInMilliseconds){
         try{
-            return incomingMessages.poll(timeoutInMilliseconds, TimeUnit.MILLISECONDS);
+            Message m= incomingMessages.poll(timeoutInMilliseconds, TimeUnit.MILLISECONDS);
+            if(m!=null &&!m.getClientID().equals(clientID)) System.out.println(m.getClientID().toString()+":"+clientID.toString()+":");
+            return m;
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
