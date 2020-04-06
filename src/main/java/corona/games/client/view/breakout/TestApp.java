@@ -12,7 +12,11 @@ public class TestApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GameRoom room = new GameRoom(
-                new GameInfo("Othello", "Noam", 1, 2)
+                new GameInfo("Othello",
+                        "Noam",
+                        1,
+                        2,
+                        2)
         );
         room.display();
     }
