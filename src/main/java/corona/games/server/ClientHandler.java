@@ -46,9 +46,7 @@ class ClientHandler implements Runnable
     
     public Message readMessage(long timeoutInMilliseconds){
         try{
-            Message m= incomingMessages.poll(timeoutInMilliseconds, TimeUnit.MILLISECONDS);
-            if(m!=null &&!m.getClientID().equals(clientID)) System.out.println(m.getClientID().toString()+":"+clientID.toString()+":");
-            return m;
+            return incomingMessages.poll(timeoutInMilliseconds, TimeUnit.MILLISECONDS);
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
