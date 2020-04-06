@@ -21,6 +21,7 @@ public class Message {
         CHAT_LIST,
         REQUEST_GAME_LIST,
         GAME_LIST,
+        GAME_LIST_UPDATE,
         START_GAME,
         GAMEPLAY_INFO,
         CONFIRM_READY,
@@ -111,7 +112,7 @@ public class Message {
 
         this.messageType = MessageType.values()[buffer.getInt()];
         byte[] uuidBuffer = new byte[UUID_BYTE_LENGTH];
-        buffer.get(uuidBuffer);                        
+        buffer.get(uuidBuffer);n                         
         this.clientID = UUID.fromString(new String(uuidBuffer));
 
         int msgSize = buffer.getInt();
