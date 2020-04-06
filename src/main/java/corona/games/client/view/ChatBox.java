@@ -26,6 +26,7 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
 
+import corona.games.communication.GameInfo;
 import corona.games.communication.Message;
 import corona.games.communication.Message.MessageType;
 import corona.games.logger.Loggable;
@@ -35,12 +36,13 @@ public class ChatBox implements Loggable {
     private TextField messageInputBox;
     private Button sendButton;
     private Button createGame;
+    private Button joinGame;
     private LinkedBlockingDeque<Message> chatMessages;
     private LinkedBlockingDeque<Message> outgoingMessages;
     private UUID clientID;
     private String username;
     private ChoiceBox<String> gameChoices;
-    private ListView<String> openGames;
+    private ListView<GameInfo> openGames;
     private Logger logger;
 
     public ChatBox(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
@@ -123,17 +125,26 @@ public class ChatBox implements Loggable {
         this.gameChoices.getSelectionModel().selectedItemProperty().addListener((v,oldV,newV) ->{
             System.out.println("Just picked " + newV);
         });
-        createGame = new Button();
+        createGame = new Button("Create Game");
         createGame.setOnAction(e -> startGame());
+    }
+
+    // TODO make pop up screen for configuration
+    private void startGame() {
+        
     }
 
     private void setUpOpenGames() {
         openGames = new ListView<>();
-        openGames.getItems().addAll("YAAKOV","NOOSI","DANIEL");
+        joinGame = new Button("Join Game");
+        joinGame.setOnAction(e -> joinGame());
+        openGames.getItems().addAll(new GameInfo("Othello", "firstgame", "Daniel", 3, 2, 4));
+
     }
 
-    private void startGame() {
-        
+    private void joinGame() {
+        String gameJoined = openGames.getSelectionModel().getSelectedItem().gameName;
+        System.out.println("Joined " + gameJoined);
     }
 
     private String modifyGame(String g, String s) {
@@ -152,10 +163,11 @@ public class ChatBox implements Loggable {
         VBox rightLayout = new VBox(15,new Label("Start new game"),gameChoices,createGame);
         rightLayout.setStyle("-fx-border-color: blue; -fx-border-width:1px");
 
+        VBox centerLayout = new VBox(15, new Label("Open Games"), openGames,joinGame);
         BorderPane root = new BorderPane();
         root.setLeft(transcript);
         root.setRight(rightLayout);
-        root.setCenter(openGames);
+        root.setCenter(centerLayout);
         root.setBottom(bottom);
         return root;
     }
