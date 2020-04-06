@@ -54,8 +54,9 @@ class ClientHandler implements Runnable
     }
     
     public void writeMessage(Message m) {
-        if(m.getClientID().equals(clientID)){
-            // we should never send a message to thw same client it came from
+        if((m.getMessageType() != MessageType.INIT_CLIENT)&&(clientID.equals(m.getClientID()))){
+            // we should never send a message to the same client it came from
+            // if this is INIT_CLIENT, this is ok, as we are sending them their clientID for the first time
             return;
         }       
         try {
