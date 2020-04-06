@@ -112,7 +112,7 @@ public class Message {
 
         this.messageType = MessageType.values()[buffer.getInt()];
         byte[] uuidBuffer = new byte[UUID_BYTE_LENGTH];
-        buffer.get(uuidBuffer);n                         
+        buffer.get(uuidBuffer);                         
         this.clientID = UUID.fromString(new String(uuidBuffer));
 
         int msgSize = buffer.getInt();
