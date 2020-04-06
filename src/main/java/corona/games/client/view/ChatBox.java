@@ -2,11 +2,15 @@ package corona.games.client.view;
 
 import javafx.application.Platform;
 import javafx.beans.binding.MapExpression;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -14,9 +18,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
+import java.util.Observable;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
@@ -29,12 +34,15 @@ public class ChatBox implements Loggable {
     private TextArea transcript;
     private TextField messageInputBox;
     private Button sendButton;
+    private Button createGame;
     private LinkedBlockingDeque<Message> chatMessages;
     private LinkedBlockingDeque<Message> outgoingMessages;
     private UUID clientID;
     private String username;
-
+    private ChoiceBox<String> gameChoices;
+    private ListView<String> openGames;
     private Logger logger;
+
     public ChatBox(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
                    UUID clientID, String username) {
         this.chatMessages = chatMessages;
@@ -109,14 +117,45 @@ public class ChatBox implements Loggable {
         messageInputBox.setDisable(false);
     }
 
+    private void setUpGameOptions() {
+        this.gameChoices = new ChoiceBox<>();
+        this.gameChoices.getItems().addAll("Risk","Othello","Settlers","Scrabble");
+        this.gameChoices.getSelectionModel().selectedItemProperty().addListener((v,oldV,newV) ->{
+            System.out.println("Just picked " + newV);
+        });
+        createGame = new Button();
+        createGame.setOnAction(e -> startGame());
+    }
+
+    private void setUpOpenGames() {
+        openGames = new ListView<>();
+        openGames.getItems().addAll("YAAKOV","NOOSI","DANIEL");
+    }
+
+    private void startGame() {
+        
+    }
+
+    private String modifyGame(String g, String s) {
+        if(g.equals(s))
+            return g + "1";
+        return g;
+    }
+
     private BorderPane setUpLayout() {
         HBox bottom = new HBox(8, new Label(""), messageInputBox, sendButton);
         HBox.setHgrow(messageInputBox, Priority.ALWAYS);
         // HBox.setMargin(quitButton, new Insets(0,0,0,50));
         bottom.setPadding(new Insets(8));
         bottom.setStyle("-fx-border-color: black; -fx-border-width:2px");
+
+        VBox rightLayout = new VBox(15,new Label("Start new game"),gameChoices,createGame);
+        rightLayout.setStyle("-fx-border-color: blue; -fx-border-width:1px");
+
         BorderPane root = new BorderPane();
         root.setLeft(transcript);
+        root.setRight(rightLayout);
+        root.setCenter(openGames);
         root.setBottom(bottom);
         return root;
     }
@@ -133,7 +172,10 @@ public class ChatBox implements Loggable {
 
         setUpMessageSendingSection();
 
+        setUpGameOptions();
         
+        setUpOpenGames();
+
         BorderPane layout = setUpLayout();
         stage.setScene(new Scene(layout));
         stage.show();
