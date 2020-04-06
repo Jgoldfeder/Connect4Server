@@ -38,6 +38,7 @@ A joint project by Yehuda Goldfeder, Daniel Schaffel, and Noam Annenberg.
     - CHAT_LIST
     - REQUEST_GAME_LIST
     - GAME_LIST
+    - GAME_LIST_UPDATE
     - START_GAME
     - GAMEPLAY_INFO
     - CONFIRM_READY
@@ -57,6 +58,7 @@ Client waits for message back of tpye INIT_CLIENT containing its ID
     - SHUT_DOWN - shut this client down
     - GAME_LIST - a list of every game looking for players. The list is stored in the msg field
     - CHAT_LIST - a list of chat history. How inclusive it is is up to the server
+    - GAME_LIST_UPDATE - an array containing first the old GameInfo, then the updated version. If it is a new entry, the array will only contain one GameInfo
 
 #### Client can send:
     - 
