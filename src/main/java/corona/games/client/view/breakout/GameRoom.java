@@ -1,5 +1,6 @@
 package corona.games.client.view.breakout;
 
+import corona.games.client.view.game.Game;
 import corona.games.communication.GameInfo;
 import corona.games.logger.Loggable;
 import javafx.event.EventHandler;
@@ -12,6 +13,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -61,27 +66,8 @@ public class GameRoom implements Loggable {
     }
 
     private void startGame() {
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process p = runtime.exec("npm start --prefix ~/Documents/Git/MultiplayerOthello");
-            InputStream in = p.getInputStream();
-            OutputStream out = p.getOutputStream();
-//            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
-//            writer.write("((" + "hello" + ") && echo --EOF--) || echo --EOF--\n)");
-//            writer.flush();
-            System.out.println("Finished Writing");
-            System.out.println("Process is alive: " + p.isAlive());
-            Scanner scanner = new Scanner(in);
-            new Thread(() -> {
-                while (scanner.hasNext()) {
-                    String input = scanner.nextLine();
-                    System.out.println(input);
-                }
-            }).start();
-            System.out.println("Process is alive: " + p.isAlive());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Game game = new Game("npm start --prefix ~/Documents/Git/MultiplayerOthello");
+        new Thread(game).start();
     }
 
     @Override

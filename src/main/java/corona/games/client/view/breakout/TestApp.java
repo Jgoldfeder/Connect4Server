@@ -13,6 +13,7 @@ public class TestApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         GameRoom room = new GameRoom(
                 new GameInfo("Othello",
+                        "Othello",
                         "Noam",
                         1,
                         2,
