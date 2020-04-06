@@ -74,8 +74,9 @@ public class Client implements Runnable, Loggable {
         if (msg.getMessageType() != MessageType.INIT_CLIENT) {
             throw new IllegalArgumentException("Client does not conform to protocal!");
         }
-
+        System.out.println(this.clientID);
         this.clientID = msg.getClientID();
+        System.out.println(this.clientID);
 
         // enter server input loop
         while (!shutdown) {
@@ -94,8 +95,6 @@ public class Client implements Runnable, Loggable {
                         }
                         break;
                     case INIT_CLIENT:
-                        //after handshake, we should never see this command
-                        this.clientID = m.getClientID();
                     default:
                         System.out.println(m.getMessageType());
                 }
