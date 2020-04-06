@@ -27,7 +27,7 @@ public class Client implements Runnable, Loggable {
 
     private LinkedBlockingDeque<Message> outgoingMessages;
     private LinkedBlockingDeque<Message> chatMessages;
-    private UUID clientID;
+    private volatile UUID clientID;
     private String username;
 
     private Logger logger;
@@ -74,10 +74,8 @@ public class Client implements Runnable, Loggable {
         if (msg.getMessageType() != MessageType.INIT_CLIENT) {
             throw new IllegalArgumentException("Client does not conform to protocal!");
         }
-        System.out.println(this.clientID);
         this.clientID = msg.getClientID();
-        System.out.println(this.clientID);
-
+        GUIManager.setID(msg.getClientID());
         // enter server input loop
         while (!shutdown) {
             Message m = null;
@@ -115,7 +113,7 @@ public class Client implements Runnable, Loggable {
         new Thread(){
             @Override
             public void run() {
-                GUIManager.setQueuesAndID(chatMessages, outgoingMessages, clientID);
+                GUIManager.setQueues(chatMessages, outgoingMessages);
                 javafx.application.Application.launch(GUIManager.class);
             }
         }.start();

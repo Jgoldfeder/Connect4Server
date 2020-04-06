@@ -66,7 +66,7 @@ public class GameRoom implements Loggable {
     }
 
     private void startGame() {
-        Game game = new Game("npm start --prefix ~/Documents/Git/MultiplayerOthello");
+        Game game = new Game("npm start --prefix ~/Projects/MultiplayerOthello");
         new Thread(game).start();
     }
 

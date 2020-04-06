@@ -2,6 +2,7 @@ package corona.games.client.controller;
 
 import corona.games.client.view.ChatBox;
 import corona.games.client.view.WelcomeBox;
+import corona.games.client.view.breakout.GameRoom;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
@@ -12,6 +13,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
 import java.util.UUID;
 
+import corona.games.communication.GameInfo;
 import corona.games.communication.Message;
 import corona.games.logger.Loggable;
 
@@ -26,6 +28,9 @@ public class GUIManager extends Application implements Loggable{
     private static LinkedBlockingDeque<Message> outgoingMessages;
     private static UUID clientID;
     
+    private static WelcomeBox wb;
+    private static ChatBox cr;
+
     private TextArea transcript;
 
     private Logger logger;
@@ -54,13 +59,15 @@ public class GUIManager extends Application implements Loggable{
         return port;
     }
 
-    public static void setQueuesAndID(LinkedBlockingDeque<Message> chatMessage, LinkedBlockingDeque<Message> outgoingMessage,
-    UUID clientId) {
+    public static void setQueues(LinkedBlockingDeque<Message> chatMessage, LinkedBlockingDeque<Message> outgoingMessage) {
         chatMessages = chatMessage;
         outgoingMessages = outgoingMessage;
-        clientID = clientId;
     }
 
+    public static void setID(UUID newClientID) {
+        clientID = newClientID;
+        cr.setID(clientID);
+    }
 
 
     public static void setUserInfo(String uname, String hname, String pnum) {
@@ -93,13 +100,15 @@ public class GUIManager extends Application implements Loggable{
             System.exit(0);
         });
 
-        WelcomeBox wb = new WelcomeBox();
+        wb = new WelcomeBox();
         wb.display();
 
         startMessagePolling();
+        cr = new ChatBox(chatMessages, outgoingMessages, transcript, clientID, username);
+        GameInfo selected = cr.display();
 
-        ChatBox cr = new ChatBox(chatMessages, outgoingMessages, transcript, clientID, username);
-        cr.display();
+        GameRoom gm = new GameRoom(selected);
+        gm.display();
     }
 
     @Override

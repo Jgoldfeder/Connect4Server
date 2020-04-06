@@ -33,6 +33,7 @@ import corona.games.communication.Message.MessageType;
 import corona.games.logger.Loggable;
 public class ChatBox implements Loggable {
 
+    private Stage stage;
     private TextArea transcript;
     private TextField messageInputBox;
     private Button sendButton;
@@ -44,6 +45,7 @@ public class ChatBox implements Loggable {
     private String username;
     private ChoiceBox<String> gameChoices;
     private ListView<GameInfo> openGames;
+    private GameInfo selectedGame;
     private Logger logger;
 
     public ChatBox(LinkedBlockingDeque<Message> chatMessages, LinkedBlockingDeque<Message> outgoingMessages, TextArea transcript,
@@ -55,7 +57,9 @@ public class ChatBox implements Loggable {
         this.username = username;
     }
 
-    
+    public void setID(UUID clientID) {
+        this.clientID = clientID;
+    }
     private void setUpTranscript() {
         transcript.setPrefRowCount(30);
         transcript.setPrefColumnCount(60);
@@ -73,6 +77,7 @@ public class ChatBox implements Loggable {
                     // TODO show in GUI
                     System.out.println("Can't be empty message");
                 } else {
+                    System.out.println(clientID);
                     Message m = new Message(MessageType.CHAT_MSG, message, clientID, username);
                 try {
                     chatMessages.put(m);
@@ -132,10 +137,11 @@ public class ChatBox implements Loggable {
 
     // TODO make pop up screen for configuration
     private void startGame() {
-        Stage stage = new Stage();
-        stage.setScene(new Scene(new TextArea()));
-        stage.show();
-        
+        String selectedGameName = this.gameChoices.getSelectionModel().getSelectedItem();
+        GameInfo newGame = new GameInfo(selectedGameName,"Need to figure this out",this.username,1,2,2);
+        openGames.getItems().add(newGame);
+        this.selectedGame = newGame;
+        this.stage.close();
     }
 
     private void setUpOpenGames() {
@@ -148,8 +154,8 @@ public class ChatBox implements Loggable {
     }
 
     private void joinGame() {
-        String gameJoined = openGames.getSelectionModel().getSelectedItem().gameName;
-        System.out.println("Joined " + gameJoined);
+        this.selectedGame = openGames.getSelectionModel().getSelectedItem();
+        this.stage.close();
     }
 
     private BorderPane setUpLayout() {
@@ -172,9 +178,9 @@ public class ChatBox implements Loggable {
         return root;
     }
     
-    public void display() {
+    public GameInfo display() {
         
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
@@ -190,7 +196,8 @@ public class ChatBox implements Loggable {
 
         BorderPane layout = setUpLayout();
         stage.setScene(new Scene(layout));
-        stage.show();
+        stage.showAndWait();
+        return selectedGame;
     }
 
     @Override
