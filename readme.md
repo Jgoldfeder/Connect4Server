@@ -49,7 +49,7 @@ A joint project by Yehuda Goldfeder, Daniel Schaffel, and Noam Annenberg.
 Client sends Message of type INIT_CLIENT. contains username, and -1 for ID
 Client waits for message back of tpye INIT_CLIENT containing its ID
 
-### Phase 1 (Hub)
+### Phase 1 (Lobby)
 
 
 #### Client can recieve:
@@ -67,7 +67,7 @@ Client waits for message back of tpye INIT_CLIENT containing its ID
     - REQUEST_GAME_LIST - ask server for a list of games looking for players
     - REQUEST_CHAT_LIST - asks server for chat history
 
-### Phase 2 (Lobby)
+### Phase 2 (Breakout Room)
 
 #### Client can receive:
     - CHAT_MSG  - post this msg to chat
