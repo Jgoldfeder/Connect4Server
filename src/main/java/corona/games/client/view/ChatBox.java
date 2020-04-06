@@ -1,6 +1,7 @@
 package corona.games.client.view;
 
 import javafx.application.Platform;
+import javafx.beans.binding.MapExpression;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
@@ -41,22 +43,16 @@ public class ChatBox implements Loggable {
         this.clientID = clientID;
         this.username = username;
     }
-    public void display() {
-        
-        Stage stage = new Stage();
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
 
+    
+    private void setUpTranscript() {
         transcript.setPrefRowCount(30);
         transcript.setPrefColumnCount(60);
         transcript.setWrapText(true);
         transcript.setEditable(false);
+    }
 
-        sendButton = new Button("send");
-        messageInputBox = new TextField();
-        messageInputBox.setPrefColumnCount(40);
+    private void sendOnEnter() {
         messageInputBox.setOnKeyReleased(key -> {
             if(key.getCode() == KeyCode.ENTER) {
                 String message = messageInputBox.getText();
@@ -78,7 +74,9 @@ public class ChatBox implements Loggable {
                 }
             }
         });
+    }
 
+    private void sendOnClick() {
         sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -100,19 +98,44 @@ public class ChatBox implements Loggable {
             }
 
         });
-
+    }
+    private void setUpMessageSendingSection() {
+        sendButton = new Button("send");
+        messageInputBox = new TextField();
+        messageInputBox.setPrefColumnCount(40);
+        sendOnEnter();
+        sendOnClick();
         messageInputBox.setEditable(true);
         messageInputBox.setDisable(false);
+    }
 
+    private BorderPane setUpLayout() {
         HBox bottom = new HBox(8, new Label(""), messageInputBox, sendButton);
         HBox.setHgrow(messageInputBox, Priority.ALWAYS);
         // HBox.setMargin(quitButton, new Insets(0,0,0,50));
         bottom.setPadding(new Insets(8));
         bottom.setStyle("-fx-border-color: black; -fx-border-width:2px");
-        BorderPane root = new BorderPane(transcript);
+        BorderPane root = new BorderPane();
+        root.setLeft(transcript);
         root.setBottom(bottom);
+        return root;
+    }
+    
+    public void display() {
+        
+        Stage stage = new Stage();
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
 
-        stage.setScene(new Scene(root));
+        setUpTranscript();
+
+        setUpMessageSendingSection();
+
+        
+        BorderPane layout = setUpLayout();
+        stage.setScene(new Scene(layout));
         stage.show();
     }
 
