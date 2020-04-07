@@ -30,8 +30,9 @@ public class GUIManager extends Application implements Loggable{
     
     private static WelcomeBox wb;
     private static ChatBox cr;
-
     private TextArea transcript;
+
+    private Thread messagePollingThread;
 
     private Logger logger;
     
@@ -80,7 +81,7 @@ public class GUIManager extends Application implements Loggable{
 
     private void startMessagePolling() {
         this.transcript = new TextArea();
-        new Thread(){
+       messagePollingThread = new Thread("GUIManager Message Polling Thread"){
             @Override
             public void run() {
                 while(true) {
@@ -90,7 +91,8 @@ public class GUIManager extends Application implements Loggable{
                     }
                 }
             }
-        }.start();
+        };
+        
     }
 
     @Override
@@ -124,7 +126,7 @@ public class GUIManager extends Application implements Loggable{
 
     public static void main(String[] args) {
         // launch(args);
-        new Thread(){
+        new Thread("GUIManager main method Thread"){
             @Override
             public void run() {
                 javafx.application.Application.launch(GUIManager.class);

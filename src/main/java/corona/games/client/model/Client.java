@@ -30,6 +30,8 @@ public class Client implements Runnable, Loggable {
     private volatile UUID clientID;
     private String username;
 
+    private Thread messageSenderThread;
+    private Thread guiManagerThread;
     private Logger logger;
 
     public Client(String hostName, int port) {
@@ -64,7 +66,8 @@ public class Client implements Runnable, Loggable {
 
         // start up threads to send data
         sender = new MessageSender(this.socket, this.outgoingMessages);
-        new Thread(sender).start();
+        messageSenderThread = new Thread(sender, "Client message sender thread");
+        messageSenderThread.start();
 
         // initial handshake
         // send username
@@ -110,13 +113,14 @@ public class Client implements Runnable, Loggable {
     }
 
     private void startGUI() {
-        new Thread(){
+        guiManagerThread = new Thread("Client GUIManager thread"){
             @Override
             public void run() {
                 GUIManager.setQueues(chatMessages, outgoingMessages);
                 javafx.application.Application.launch(GUIManager.class);
             }
-        }.start();
+        };
+        guiManagerThread.start();
     }
 
     private String getUsername() {
