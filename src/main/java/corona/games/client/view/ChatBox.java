@@ -158,18 +158,34 @@ public class ChatBox implements Loggable {
         this.stage.close();
     }
 
-    private BorderPane setUpLayout() {
+    private HBox getTextBoxSection() {
         HBox bottom = new HBox(8, new Label(""), messageInputBox, sendButton);
         HBox.setHgrow(messageInputBox, Priority.ALWAYS);
         // HBox.setMargin(quitButton, new Insets(0,0,0,50));
         bottom.setPadding(new Insets(8));
         bottom.setStyle("-fx-border-color: black; -fx-border-width:2px");
 
+        return bottom;
+    }
+
+    private VBox getCreateGameSection() {
         VBox rightLayout = new VBox(15,new Label("Start new game"),gameChoices,createGame);
         rightLayout.setStyle("-fx-border-color: blue; -fx-border-width:1px");
+        return rightLayout;
+    }
 
+    private VBox getOpenGameSection() {
         VBox centerLayout = new VBox(15, new Label("Open Games"), openGames,joinGame);  
         centerLayout.setAlignment(Pos.CENTER);
+        return centerLayout;
+    }
+
+    private BorderPane setUpLayout() {
+
+        HBox bottom = getTextBoxSection();
+        VBox rightLayout = getCreateGameSection();
+        VBox centerLayout = getOpenGameSection();
+       
         BorderPane root = new BorderPane();
         root.setLeft(transcript);
         root.setRight(rightLayout);
