@@ -27,6 +27,7 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
 
+import corona.games.client.view.lobby.GameConfigurator;
 import corona.games.communication.GameInfo;
 import corona.games.communication.Message;
 import corona.games.communication.Message.MessageType;
@@ -60,6 +61,10 @@ public class ChatBox implements Loggable {
     public void setID(UUID clientID) {
         this.clientID = clientID;
     }
+
+    /**
+     * Sets up the TextArea transcipt to display the chat messages
+     */
     private void setUpTranscript() {
         transcript.setPrefRowCount(30);
         transcript.setPrefColumnCount(60);
@@ -67,6 +72,9 @@ public class ChatBox implements Loggable {
         transcript.setEditable(false);
     }
 
+    /**
+     * creates EventHandler for sending message when hitting ENTER in message area
+     */
     private void sendOnEnter() {
         messageInputBox.setOnKeyReleased(key -> {
             if(key.getCode() == KeyCode.ENTER) {
@@ -92,6 +100,9 @@ public class ChatBox implements Loggable {
         });
     }
 
+    /**
+     * creates EventHandler for sending message when clicking send
+     */
     private void sendOnClick() {
         sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -115,6 +126,10 @@ public class ChatBox implements Loggable {
 
         });
     }
+
+    /**
+     * Sets up everything for sending messages
+     */
     private void setUpMessageSendingSection() {
         sendButton = new Button("send");
         messageInputBox = new TextField();
@@ -135,10 +150,10 @@ public class ChatBox implements Loggable {
         createGame.setOnAction(e -> startGame());
     }
 
-    // TODO make pop up screen for configuration
     private void startGame() {
         String selectedGameName = this.gameChoices.getSelectionModel().getSelectedItem();
-        GameInfo newGame = new GameInfo(selectedGameName,"Need to figure this out",this.username,1,2,2);
+        String gameNameFromHost = new GameConfigurator().display();
+        GameInfo newGame = new GameInfo(selectedGameName,gameNameFromHost,this.username,1,2,2);
         openGames.getItems().add(newGame);
         this.selectedGame = newGame;
         this.stage.close();
@@ -148,8 +163,9 @@ public class ChatBox implements Loggable {
         openGames = new ListView<>();
         joinGame = new Button("Join Game");
         joinGame.setOnAction(e -> joinGame());
-        GameInfo gm = new GameInfo("Othello", "firstgame", "Daniel", 3, 2, 4);
-        // openGames.getItems().addAll(gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm);
+        // GameInfo gm = new GameInfo("Othello", "firstgame", "Daniel", 3, 2, 4);
+        // openGames.getItems().addAll(gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, 
+        // gm, gm, gm, gm, gm, gm, gm, gm, gm, gm, gm);
 
     }
 
@@ -194,6 +210,10 @@ public class ChatBox implements Loggable {
         return root;
     }
     
+    /**
+     * Displays the Lobby 
+     * @return the game the client has either selected or created
+     */
     public GameInfo display() {
         
         stage = new Stage();

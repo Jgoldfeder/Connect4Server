@@ -81,7 +81,7 @@ public class GUIManager extends Application implements Loggable{
 
     private void startMessagePolling() {
         this.transcript = new TextArea();
-       messagePollingThread = new Thread("GUIManager Message Polling Thread"){
+       this.messagePollingThread = new Thread("GUIManager Message Polling Thread"){
             @Override
             public void run() {
                 while(true) {
@@ -92,7 +92,7 @@ public class GUIManager extends Application implements Loggable{
                 }
             }
         };
-        
+        this.messagePollingThread.start();
     }
 
     @Override
