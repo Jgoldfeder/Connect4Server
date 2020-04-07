@@ -1,5 +1,6 @@
 package corona.games.client.view.lobby;
 
+import corona.games.client.view.MessageBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -7,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameConfigurator {
@@ -35,7 +35,7 @@ public class GameConfigurator {
         submit.setOnMousePressed(e -> {
             this.nameOfGame = gameNameEntryField.getText();
             if(this.nameOfGame == null || this.nameOfGame.isEmpty()) {
-                System.out.println("need to make pop up");
+                MessageBox.display("ERROR", "Host needs to give a name for the room");
                 return;
             }
             else {

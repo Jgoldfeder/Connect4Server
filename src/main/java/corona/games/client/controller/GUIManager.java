@@ -1,7 +1,7 @@
 package corona.games.client.controller;
 
 import corona.games.client.view.ChatBox;
-import corona.games.client.view.WelcomeBox;
+import corona.games.client.view.signin.WelcomeBox;
 import corona.games.client.view.breakout.GameRoom;
 import javafx.application.Application;
 import javafx.application.Platform;
