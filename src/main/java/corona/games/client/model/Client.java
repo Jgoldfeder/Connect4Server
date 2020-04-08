@@ -14,6 +14,10 @@ import corona.games.client.controller.GUIManager;
 import corona.games.communication.*;
 import corona.games.communication.Message.MessageType;
 import corona.games.logger.Loggable;
+import javafx.stage.Stage;
+import javafx.fxml.*;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 public class Client implements Runnable, Loggable {
 

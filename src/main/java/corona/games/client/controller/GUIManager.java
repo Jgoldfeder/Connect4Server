@@ -5,12 +5,16 @@ import corona.games.client.view.signin.WelcomeBox;
 import corona.games.client.view.breakout.GameRoom;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import javafx.fxml.*;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
+import java.io.IOException;
 import java.util.UUID;
 
 import corona.games.communication.GameInfo;
@@ -95,22 +99,48 @@ public class GUIManager extends Application implements Loggable{
         this.messagePollingThread.start();
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
+    public void testFXML() {
+        Stage stage = new Stage();
+        // TODO Auto-generated method stub
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("Welcome.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        // Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Welcome.fxml"));
+        Scene scene = new Scene(root, 300, 275);
+    
 
-        wb = new WelcomeBox();
-        wb.display();
+        stage.setTitle("FXML Welcome");
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
 
+    private void currentWorking() {
+        // wb = new WelcomeBox();
+        // wb.display();
+        testFXML();
         startMessagePolling();
         cr = new ChatBox(chatMessages, outgoingMessages, transcript, clientID, username);
         GameInfo selected = cr.display();
 
         GameRoom gm = new GameRoom(selected);
         gm.display();
+    }
+    
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+        // this.testFXML();
+        currentWorking();
     }
 
     @Override
@@ -134,6 +164,6 @@ public class GUIManager extends Application implements Loggable{
         }.start();
         String name = GUIManager.getUsername();
         System.out.println(name);
-
+        
     }
 }
