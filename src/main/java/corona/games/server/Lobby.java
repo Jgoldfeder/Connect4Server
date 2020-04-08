@@ -55,11 +55,16 @@ class ProcessIncomingMessages implements Runnable{
     
     public void run(){
         Gson gson = null;
-                                        System.out.println("runnig! MSG");
+        
+        System.out.println("Entering danger Zone");
         try{
-        //gson = new Gson();
-        }catch(Exception e)    {                                System.out.println(e.getMessage());}
-                                                System.out.println("runnig! MSG");
+            //gson = new Gson();
+        }catch(Exception e){                               
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
+        
+        System.out.println("leaving Danger Zone");
 
 
         while(!shutdown){
