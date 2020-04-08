@@ -54,13 +54,21 @@ class ProcessIncomingMessages implements Runnable{
     }
     
     public void run(){
-        Gson gson = new Gson();
+        Gson gson = null;
+                                        System.out.println("runnig! MSG");
+        try{
+        //gson = new Gson();
+        }catch(Exception e)    {                                System.out.println(e.getMessage());}
+                                                System.out.println("runnig! MSG");
+
+
         while(!shutdown){
             Message m = client.readMessage(1000);
             if(m==null) continue;
             switch(m.getMessageType()){
                 case CHAT_MSG:
                     // broadcast
+
                     lobby.getClientList().forEachValue(60,(elem)-> elem.writeMessage(m));
                     break;
                 case SHUT_DOWN:
@@ -69,14 +77,14 @@ class ProcessIncomingMessages implements Runnable{
                     client.shutdown();
                     break;
                 case CREATE_GAME:
-                    String jsonReceived = m.getMessage();
-                    GameInfo info = gson.fromJson(jsonReceived, GameInfo.class);
-                    lobby.addGame(info);
+                    //String jsonReceived = m.getMessage();
+                    //GameInfo info = gson.fromJson(jsonReceived, GameInfo.class);
+                    //lobby.addGame(info);
                     break;
                 case REQUEST_GAME_LIST:
-                    GameInfo[] infos = (GameInfo[])lobby.getGameList().keySet().toArray();
-                    String jsonToSend = gson.toJson(infos);
-                    Message response = new Message(MessageType.GAME_LIST ,jsonToSend,null,"server");
+                    //GameInfo[] infos = (GameInfo[])lobby.getGameList().keySet().toArray();
+                    //String jsonToSend = gson.toJson(infos);
+                    //Message response = new Message(MessageType.GAME_LIST ,jsonToSend,null,"server");
                     break;
                 default:
                     continue;
